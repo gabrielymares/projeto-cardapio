@@ -1,12 +1,12 @@
 :root {
-    --gray-bg-color: #f0f0f0;
-    --dark-gray-color: #333333;
-    --sidebar-color: #7d7d7d;
-    --sidebar-gradient-start: #b1b1b1;
-    --sidebar-gradient-end: #7d7d7d;
-    --box-bg-color: #e5e5e5;
-    --active-link-color: #ffffff;
-    --text-color: #444444;
+    /* Paleta baseada na tela de Login */
+    --main-green: #8fa248;           /* O verde principal (#8fa248) */
+    --dark-green-hover: #4c532c;     /* Verde mais escuro para hover */
+    --light-gray-bg: #f0f0f0;        /* Fundo claro geral */
+    --box-bg-color: #eeeeee;         /* Fundo das caixas e links não ativos (como o .login-box) */
+    --text-color-dark: #333333;      /* Cor principal do texto (Dark Gray) */
+    --text-color-green: #535a3a;     /* Texto para botões não ativos (baseado no .tab) */
+    --active-text-color: #ffffff;    /* Texto branco para elementos ativos */
 }
 
 * {
@@ -17,18 +17,20 @@
 
 html, body {
     height: 100%;
-    font-family: 'Poppins', Arial, sans-serif;
+    /* Mantenha a fonte Poppins ou Arial se não tiver Poppins linkada */
+    font-family: 'Poppins', Arial, sans-serif; 
 }
 
 body {
-    background-color: var(--gray-bg-color);
+    background-color: var(--light-gray-bg);
     display: flex;
     flex-direction: column;
 }
 
 .page-header {
-    background-color: var(--dark-gray-color);
-    color: var(--active-link-color);
+    /* Cor de fundo do cabeçalho */
+    background-color: var(--main-green); 
+    color: var(--active-text-color); /* Texto branco */
     padding: 20px 40px;
     font-size: 1.2em;
     font-weight: 600;
@@ -41,8 +43,9 @@ body {
 
 .sidebar {
     width: 250px;
-    background-color: var(--sidebar-color);
-    background-image: linear-gradient(180deg, var(--sidebar-gradient-start) 0%, var(--sidebar-gradient-end) 100%);
+    /* Usando um gradiente de verde principal para um verde mais escuro */
+    background-color: var(--main-green);
+    background-image: linear-gradient(180deg, var(--main-green) 0%, var(--dark-green-hover) 100%);
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
@@ -56,27 +59,30 @@ body {
 }
 
 .nav-link {
-    background-color: var(--box-bg-color);
+    background-color: var(--box-bg-color); /* Fundo da caixa cinza claro */
     padding: 10px 20px;
     border-radius: 10px;
     text-align: center;
-    color: var(--text-color);
+    color: var(--text-color-green); /* Cor do texto padrão (verde escuro) */
     font-weight: 600;
     text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
 .nav-link.active {
-    background-color: var(--active-link-color);
+    background-color: var(--active-text-color); /* Fundo branco */
+    color: var(--text-color-dark); /* Texto escuro no ativo */
 }
 
 .logo-placeholder {
     display: flex;
     justify-content: center;
+    margin-top: 500px;
 }
 
 .logo-placeholder img {
     max-width: 100px;
+    height: auto;
 }
 
 .main-content {
@@ -95,7 +101,7 @@ body {
 .content-header h3 {
     font-size: 1.2em;
     font-weight: 400;
-    color: var(--text-color);
+    color: var(--text-color-dark);
     text-transform: uppercase;
 }
 
@@ -114,25 +120,25 @@ body {
 .button { 
     text-decoration: none; 
     padding: 12px 24px; 
-    background-color: var(--box-bg-color); 
-    color: var(--text-color); 
+    background-color: var(--main-green); /* Botão principal no verde */
+    color: var(--active-text-color); /* Texto branco no botão principal */
     border-radius: 5px; 
     font-weight: bold; 
     transition: background-color 0.3s ease; 
 }
 
 .button:hover {
-    background-color: var(--sidebar-gradient-start); 
+    background-color: var(--dark-green-hover); /* Hover para verde escuro */
 }
 
 .button.active {
-    background-color: var(--active-link-color);
-    color: var(--dark-gray-color);
+    background-color: var(--active-text-color); /* Fundo branco */
+    color: var(--text-color-dark); /* Texto escuro */
 }
 
 .tasks-container {
     flex-grow: 1;
-    background-color: var(--box-bg-color);
+    background-color: var(--box-bg-color); /* Fundo da caixa de tarefas */
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -151,12 +157,12 @@ body {
     justify-content: space-between;
     align-items: center;
     font-size: 1.1em;
-    color: var(--text-color);
+    color: var(--text-color-dark);
 }
 
 .task-number {
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--text-color-dark);
 }
 
 .side-info {
@@ -168,12 +174,12 @@ body {
 
 .score-box,
 .conditions-list {
-    background-color: var(--box-bg-color);
+    background-color: var(--box-bg-color); /* Fundo da caixa de score/condições */
     padding: 15px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: var(--text-color);
+    color: var(--text-color-dark);
     font-weight: 600;
 }
 
@@ -191,13 +197,13 @@ body {
 
 .profile-card h2 {
     font-size: 1.5em;
-    color: var(--text-color);
+    color: var(--text-color-dark);
     margin-bottom: 20px;
 }
 
 .profile-info p {
     font-size: 1.1em;
-    color: var(--text-color);
+    color: var(--text-color-dark);
     margin-bottom: 15px;
 }
 
