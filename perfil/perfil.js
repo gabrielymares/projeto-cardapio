@@ -1,70 +1,63 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Referência aos elementos HTML
-    const userNameSpan = document.getElementById('user-name');
-    const userEmailSpan = document.getElementById('user-email');
-    const userCpfSpan = document.getElementById('user-cpf');
-    const pontuacaoUsuarioSpan = document.getElementById('pontuacao-usuario');
-    const pontuacaoTotalSpan = document.getElementById('pontuacao-total');
-    const condicoesListUl = document.getElementById('condicoes-lista-perfil');
+document.addEventListener('DOMContentLoaded', carregarPerfil);
 
-    // Tenta carregar os dados da última avaliação do localStorage
-    const dadosSalvos = localStorage.getItem('ultimaAvaliacao');
+function carregarPerfil() {
+    // === 1. Tenta buscar os dados cadastrais (Formulário) ===
+    const dadosUsuarioSalvos = localStorage.getItem('dadosUsuario');
+    const dadosUsuario = dadosUsuarioSalvos ? JSON.parse(dadosUsuarioSalvos) : null;
+    
+    // === 2. Tenta buscar os resultados da avaliação ===
+    const resultadoAvaliacaoSalvos = localStorage.getItem('ultimaAvaliacao');
+    const resultadoAvaliacao = resultadoAvaliacaoSalvos ? JSON.parse(resultadoAvaliacaoSalvos) : null;
 
-    if (dadosSalvos) {
+    // --- CARREGAR DADOS CADASTRAIS (Altura, Peso, Nome, etc.) ---
+    if (dadosUsuario) {
         try {
-            const dados = JSON.parse(dadosSalvos);
+            // Preenchendo as informações de texto
+            document.getElementById('perfil-nome').textContent = dadosUsuario.nome || '--';
+            document.getElementById('perfil-idade').textContent = dadosUsuario.idade || '--';
+            document.getElementById('perfil-sexo').textContent = dadosUsuario.sexo || '--';
+            document.getElementById('perfil-contato').textContent = dadosUsuario.contato || '--';
+            
+            // Tratamento de Números (Altura, Peso, IMC)
+            // Usa .toFixed(2) para garantir duas casas decimais, se o dado existir
+            document.getElementById('perfil-altura').textContent = dadosUsuario.altura ? dadosUsuario.altura.toFixed(2) : '--';
+            document.getElementById('perfil-peso').textContent = dadosUsuario.peso ? dadosUsuario.peso.toFixed(2) : '--';
+            document.getElementById('perfil-imc').textContent = dadosUsuario.imc ? dadosUsuario.imc.toFixed(2) : '--';
 
-            // Exibe as informações do usuário
-            if (userNameSpan) {
-                userNameSpan.textContent = dados.nome || 'Não informado';
-            }
-            if (userEmailSpan) {
-                userEmailSpan.textContent = dados.email || 'Não informado';
-            }
-            if (userCpfSpan) {
-                userCpfSpan.textContent = dados.cpf || 'Não informado';
-            }
+        } catch (error) {
+            console.error("Erro ao processar dados cadastrais:", error);
+        }
+    }
 
-            // Exibe a pontuação
-            if (pontuacaoUsuarioSpan) {
-                pontuacaoUsuarioSpan.textContent = dados.pontuacao || 'N/A';
-            }
-            if (pontuacaoTotalSpan) {
-                pontuacaoTotalSpan.textContent = '22';
-            }
-
-            // Exibe as restrições e condições
-            if (condicoesListUl && dados.grupo) {
-                condicoesListUl.innerHTML = ''; // Limpa a lista existente
+    // --- CARREGAR RESULTADOS DA AVALIAÇÃO (Pontuação, Grupo) ---
+    if (resultadoAvaliacao) {
+        try {
+            // Pontuação
+            document.getElementById('pontuacao-usuario').textContent = resultadoAvaliacao.pontuacao || '0';
+            document.getElementById('pontuacao-total').textContent = '22'; // Mantendo o total fixo
+            
+            // Condições e Alergias
+            const condicoesListUl = document.querySelector('.conditions-list ul');
+            if (condicoesListUl) {
+                condicoesListUl.innerHTML = '';
+                
+                // 1. Grupo (Fase do Programa)
                 const grupoLi = document.createElement('li');
-                grupoLi.textContent = dados.grupo;
+                grupoLi.textContent = `Grupo: ${resultadoAvaliacao.grupo || 'Não avaliado'}`;
                 condicoesListUl.appendChild(grupoLi);
-
-                if (dados.alergias && dados.alergias.length > 0) {
-                    dados.alergias.forEach(alergia => {
+                
+                // 2. Alergias
+                if (resultadoAvaliacao.alergias && resultadoAvaliacao.alergias.length > 0) {
+                    resultadoAvaliacao.alergias.forEach(alergia => {
                         const li = document.createElement('li');
                         li.textContent = `Alergia a ${alergia}`;
                         condicoesListUl.appendChild(li);
                     });
                 }
             }
-
-        } catch (e) {
-            console.error('Erro ao processar dados do localStorage:', e);
-            if (userNameSpan) userNameSpan.textContent = 'Erro ao carregar';
-            if (userEmailSpan) userEmailSpan.textContent = 'Erro ao carregar';
-            if (userCpfSpan) userCpfSpan.textContent = 'Erro ao carregar';
-            if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = 'Erro';
-            if (pontuacaoTotalSpan) pontuacaoTotalSpan.textContent = 'Erro';
-            if (condicoesListUl) condicoesListUl.innerHTML = '<li>Erro ao carregar dados.</li>';
+            
+        } catch (error) {
+            console.error("Erro ao processar resultados da avaliação:", error);
         }
-    } else {
-        // Mensagens padrão caso não haja dados no localStorage
-        if (userNameSpan) userNameSpan.textContent = 'Nenhum dado encontrado.';
-        if (userEmailSpan) userEmailSpan.textContent = 'Nenhum dado encontrado.';
-        if (userCpfSpan) userCpfSpan.textContent = 'Nenhum dado encontrado.';
-        if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = '0';
-        if (pontuacaoTotalSpan) pontuacaoTotalSpan.textContent = '22';
-        if (condicoesListUl) condicoesListUl.innerHTML = '<li>Sem dados de avaliação.</li>';
     }
-});
+}
