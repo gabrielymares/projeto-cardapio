@@ -1,52 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Referência aos elementos HTML que serão atualizados
+    // === Elementos da Página de Perfil (Dados Cadastrais) ===
+    // ATENÇÃO: Se estiver usando o HTML de perfil da nossa última interação,
+    // os IDs corretos seriam: perfil-nome, perfil-idade, perfil-sexo, perfil-contato, perfil-imc, etc.
+    // Adaptei para IDs mais genéricos, mas você pode precisar ajustá-los.
+    const userNameSpan = document.getElementById('perfil-nome'); 
+    const userEmailSpan = document.getElementById('perfil-contato'); // Usamos Contato/Email
+    const userSexSpan = document.getElementById('perfil-sexo');
+    const userAgeSpan = document.getElementById('perfil-idade');
+    const userIMC = document.getElementById('perfil-imc');
+    
+    // === Elementos da Página Inicial/Dashboard (Pontuação e Cardápio) ===
     const pontuacaoUsuarioSpan = document.getElementById('pontuacao-usuario');
     const pontuacaoTotalSpan = document.getElementById('pontuacao-total');
-    const condicoesListUl = document.querySelector('.conditions-list ul');
+    // Este seletor foi mantido do seu segundo bloco para as Condições/Alergias:
+    const condicoesListUl = document.querySelector('.conditions-list ul'); 
     const semanaAtualTitulo = document.getElementById('semana-atual-titulo');
     const tasksContainerUl = document.querySelector('.tasks-container ul');
 
-    // Mapeamento de substituições de alimentos para alergias comuns
-    // Adapte esta lista conforme as necessidades do seu programa
+    // Tenta carregar os dados cadastrais (criados pelo formulário)
+    const dadosUsuarioSalvos = localStorage.getItem('dadosUsuario');
+    const dadosUsuario = dadosUsuarioSalvos ? JSON.parse(dadosUsuarioSalvos) : null;
+    
+    // Tenta carregar os resultados da avaliação
+    const resultadoAvaliacaoSalvos = localStorage.getItem('ultimaAvaliacao');
+    const resultadoAvaliacao = resultadoAvaliacaoSalvos ? JSON.parse(resultadoAvaliacaoSalvos) : null;
+    
+    // Define os cardápios (mantido)
     const substituicoes = {
-        // Exemplo de intolerância à lactose
-        'lactose': {
-            'leite': 'leite de amêndoas',
-            'iogurte': 'iogurte de coco',
-            'queijo': 'queijo de castanhas'
-        },
-        // Exemplo de intolerância ao glúten
-        'glúten': {
-            'pão': 'pão sem glúten',
-            'macarrão': 'macarrão de arroz ou abobrinha',
-            'trigo': 'farinha de arroz'
-        }
+        'lactose': { 'leite': 'leite de amêndoas', 'iogurte': 'iogurte de coco', 'queijo': 'queijo de castanhas' },
+        'glúten': { 'pão': 'pão sem glúten', 'macarrão': 'macarrão de arroz ou abobrinha', 'trigo': 'farinha de arroz' }
     };
-
-    // Função para adaptar o cardápio com base nas alergias do usuário
-    function adaptarCardapio(cardapioOriginal, alergiasDoUsuario) {
-        if (!alergiasDoUsuario || alergiasDoUsuario.length === 0) {
-            return cardapioOriginal; // Retorna o cardápio original se não houver alergias
-        }
-
-        return cardapioOriginal.map(refeicao => {
-            let refeicaoAdaptada = refeicao;
-            alergiasDoUsuario.forEach(alergia => {
-                const alergiaLowerCase = alergia.toLowerCase();
-                const mapaSub = substituicoes[alergiaLowerCase];
-                
-                if (mapaSub) {
-                    for (const alimento in mapaSub) {
-                        const regex = new RegExp(`\\b${alimento}\\b`, 'gi');
-                        refeicaoAdaptada = refeicaoAdaptada.replace(regex, mapaSub[alimento]);
-                    }
-                }
-            });
-            return refeicaoAdaptada;
-        });
-    }
-
-    // Define os cardápios base para cada fase do programa
+    
     const cardapiosPorFase = {
         'introducao': {
             'domingo': ['Café da manhã: Iogurte natural com frutas', 'Almoço: Salada de folhas com frango grelhado', 'Jantar: Omelete de legumes com queijo'],
@@ -66,44 +50,61 @@ document.addEventListener('DOMContentLoaded', () => {
             'sexta': ['Café da manhã: Vitamina de frutas vermelhas e proteína', 'Almoço: Frango xadrez fit com arroz integral', 'Jantar: Sopa cremosa de legumes com frango'],
             'sabado': ['Café da manhã: Tapioca com recheio de frango e requeijão', 'Almoço: Filé de peixe em crosta de castanhas com salada', 'Jantar: Salada de atum com ovos e azeitonas']
         },
-        'desafios': { /* Preencha aqui com os cardápios da fase 'desafios' */ },
-        'consolidacao': { /* Preencha aqui com os cardápios da fase 'consolidacao' */ }
+        'desafios': {}, 'consolidacao': {}
     };
 
-    // Tenta carregar os dados da última avaliação do localStorage
-    const dadosSalvos = localStorage.getItem('ultimaAvaliacao');
+    function adaptarCardapio(cardapioOriginal, alergiasDoUsuario) {
+        if (!alergiasDoUsuario || alergiasDoUsuario.length === 0) return cardapioOriginal;
+        
+        return cardapioOriginal.map(refeicao => {
+            let refeicaoAdaptada = refeicao;
+            alergiasDoUsuario.forEach(alergia => {
+                const mapaSub = substituicoes[alergia.toLowerCase()];
+                if (mapaSub) {
+                    for (const alimento in mapaSub) {
+                        const regex = new RegExp(`\\b${alimento}\\b`, 'gi');
+                        refeicaoAdaptada = refeicaoAdaptada.replace(regex, mapaSub[alimento]);
+                    }
+                }
+            });
+            return refeicaoAdaptada;
+        });
+    }
 
-    // Restante do código (lógica de carregamento e exibição)
-    if (dadosSalvos) {
-        try {
-            const dados = JSON.parse(dadosSalvos);
+    try {
+        // --- 1. CARREGAR DADOS CADASTRAIS (Para a página de Perfil) ---
+        if (dadosUsuario) {
+            if (userNameSpan) userNameSpan.textContent = dadosUsuario.nome || 'Não informado';
+            if (userEmailSpan) userEmailSpan.textContent = dadosUsuario.contato || 'Não informado';
+            if (userSexSpan) userSexSpan.textContent = dadosUsuario.sexo || 'Não informado';
+            if (userAgeSpan) userAgeSpan.textContent = dadosUsuario.idade || 'Não informado';
+            if (userIMC) userIMC.textContent = dadosUsuario.imc ? dadosUsuario.imc.toFixed(2) : 'Não informado';
+            // Nota: CPF não foi solicitado nem salvo no formulário, é normal que não apareça.
+        }
+        
+        // --- 2. CARREGAR PONTUAÇÃO E CONDIÇÕES ---
+        if (resultadoAvaliacao) {
+            if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = resultadoAvaliacao.pontuacao || 'N/A';
+            if (pontuacaoTotalSpan) pontuacaoTotalSpan.textContent = '22';
 
-            // === Lógica de exibição da PONTUAÇÃO E CONDIÇÕES ===
-            if (pontuacaoUsuarioSpan) {
-                pontuacaoUsuarioSpan.textContent = dados.pontuacao || 'N/A';
-            }
-            if (pontuacaoTotalSpan) {
-                pontuacaoTotalSpan.textContent = '22';
-            }
-
-            if (condicoesListUl && dados.grupo) {
+            if (condicoesListUl && resultadoAvaliacao.grupo) {
                 condicoesListUl.innerHTML = '';
                 const grupoLi = document.createElement('li');
-                grupoLi.textContent = dados.grupo;
+                grupoLi.textContent = resultadoAvaliacao.grupo;
                 condicoesListUl.appendChild(grupoLi);
 
-                if (dados.alergias && dados.alergias.length > 0) {
-                     dados.alergias.forEach(alergia => {
-                         const li = document.createElement('li');
-                         li.textContent = `Alergia a ${alergia}`;
-                         condicoesListUl.appendChild(li);
-                     });
+                if (resultadoAvaliacao.alergias && resultadoAvaliacao.alergias.length > 0) {
+                    resultadoAvaliacao.alergias.forEach(alergia => {
+                        const li = document.createElement('li');
+                        li.textContent = `Alergia a ${alergia}`;
+                        condicoesListUl.appendChild(li);
+                    });
                 }
             }
             
-            // === Lógica de cálculo da SEMANA ATUAL e EXIBIÇÃO DO CARDÁPIO ===
-            if (semanaAtualTitulo && dados.dataInicio) {
-                const dataInicio = new Date(dados.dataInicio);
+            // --- 3. CÁLCULO DA SEMANA E CARDÁPIO (Lógica da Página Inicial) ---
+            if (semanaAtualTitulo && dadosUsuario && dadosUsuario.dataInicio) {
+                const dataInicio = new Date(dadosUsuario.dataInicio);
                 const dataAtual = new Date();
                 
                 const diferencaEmMilissegundos = dataAtual.getTime() - dataInicio.getTime();
@@ -130,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     faseDoPrograma = 'consolidacao';
                 }
                 
-                // Exibir o cardápio diário com base na fase e no dia da semana
                 if (tasksContainerUl) {
                     const diasDaSemana = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
                     const hoje = diasDaSemana[dataAtual.getDay()];
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cardapioBase = cardapiosPorFase[faseDoPrograma] ? cardapiosPorFase[faseDoPrograma][hoje] : null;
 
                     if (cardapioBase) {
-                        const alergias = dados.alergias || [];
+                        const alergias = resultadoAvaliacao.alergias || [];
                         const cardapioPersonalizado = adaptarCardapio(cardapioBase, alergias);
 
                         tasksContainerUl.innerHTML = '';
@@ -153,26 +153,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         tasksContainerUl.innerHTML = '<li>Cardápio não disponível para esta fase.</li>';
                     }
                 }
-
-            } else {
+            } else if (semanaAtualTitulo) {
                 semanaAtualTitulo.textContent = `Programa não iniciado`;
             }
-
-        } catch (e) {
-            console.error('Erro ao processar dados do localStorage:', e);
-            if (semanaAtualTitulo) semanaAtualTitulo.textContent = `Erro ao carregar semana`;
-            if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = `Erro`;
-            if (pontuacaoTotalSpan) pontuacaoTotalSpan.textContent = `Erro`;
-            if (condicoesListUl) condicoesListUl.innerHTML = `<li>Erro ao carregar dados.</li>`;
-            if (tasksContainerUl) tasksContainerUl.innerHTML = `<li>Erro ao carregar cardápio.</li>`;
+        } else {
+            // Caso não haja NENHUM dado de avaliação
+            if (semanaAtualTitulo) semanaAtualTitulo.textContent = `Bem-vindo ao Programa de Adaptação!`;
+            if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = `0`;
+            if (pontuacaoTotalSpan) pontuacaoTotalSpan.textContent = `22`;
+            if (condicoesListUl) condicoesListUl.innerHTML = `<li>Sem dados de avaliação.</li>`;
+            if (tasksContainerUl) tasksContainerUl.innerHTML = `<li>Para começar, faça a sua avaliação.</li>`;
         }
-    } else {
-        // Mensagens padrão caso não haja dados no localStorage
-        if (semanaAtualTitulo) semanaAtualTitulo.textContent = `Bem-vindo ao Programa de Adaptação!`;
-        if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = `0`;
-        if (pontuacaoTotalSpan) pontuacaoTotalSpan.textContent = `22`;
-        if (condicoesListUl) condicoesListUl.innerHTML = `<li>Sem dados de avaliação.</li>`;
-        if (tasksContainerUl) tasksContainerUl.innerHTML = `<li>Para começar, faça a sua avaliação.</li>`;
-        console.log('Nenhum dado de avaliação encontrado no localStorage.');
+
+    } catch (e) {
+        console.error('Erro geral ao processar dados:', e);
+        // Exibir mensagens de erro em todos os spans relevantes
+        if (userNameSpan) userNameSpan.textContent = 'Erro ao carregar dados';
+        if (pontuacaoUsuarioSpan) pontuacaoUsuarioSpan.textContent = `Erro`;
+        if (semanaAtualTitulo) semanaAtualTitulo.textContent = `Erro ao carregar semana`;
+        if (condicoesListUl) condicoesListUl.innerHTML = `<li>Erro ao carregar dados.</li>`;
     }
 });
+
+function voltarPagina() {
+  window.history.back();
+}
