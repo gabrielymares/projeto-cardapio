@@ -1,128 +1,121 @@
-const btnCadastro = document.getElementById("btnCadastro");
-const btnLogin = document.getElementById("btnLogin");
-const formCadastro = document.getElementById("formCadastro");
-const formLogin = document.getElementById("formLogin");
-const btnEnviarCadastro = document.getElementById("btnEnviarCadastro");
-const cadastroInput = document.getElementById("cadastroInput");
-const btnEnviarLogin = document.getElementById("btnEnviarLogin");
-const loginInput = document.getElementById("loginInput");
-
-// Novas constantes para os campos de senha
-const senhaCadastroInput = document.getElementById("senhaCadastroInput");
-const confirmarSenhaInput = document.getElementById("confirmarSenhaInput");
-// Essa constante precisa do ID no HTML do campo de senha do Login
-const senhaLoginInput = document.getElementById("senhaLoginInput"); 
-
-// ==== Funções de máscara para o contato ====
+// ==== Funções de utilitário (mantidas) ====
+function normalizeLogin(value) {
+    const v = String(value || '').trim();
+    if (!v) return '';
+    if (v.includes('@')) return v.toLowerCase();
+    return v.replace(/\D/g, '');
+}
 
 function maskPhoneBR(digits) {
-    const d = digits.replace(/\D/g, "").slice(0, 11);
-    if (d.length === 0) return '';
+    const d = digits.replace(/\D/g, '').slice(0, 11);
     if (d.length <= 2) return `(${d}`;
     if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
     if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
     return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
-function applyContatoMask(e) {
-    let val = e.target.value || "";
-    val = val.trim();
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('dataForm');
+    const alturaInput = document.getElementById('altura');
+    const pesoInput = document.getElementById('peso');
+    const resultadoImcInput = document.getElementById('resultado-imc-input');
+    const contatoInput = document.getElementById('contato');
 
-    if (val.includes("@")) {
-        e.target.setAttribute("inputmode", "email");
-        e.target.maxLength = 254;
-        e.target.value = val;
-        return;
+    
+    function applyContatoMask() {
+        let val = contatoInput.value || '';
+        val = val.trim();
+
+        if (!val) {
+            contatoInput.value = '';
+            return;
+        }
+
+        if (val.includes('@')) {
+            contatoInput.setAttribute('inputmode', 'email');
+            contatoInput.maxLength = 254;
+            contatoInput.value = val;
+            return;
+        }
+
+        if (/^[\d()\s\-]*$/.test(val)) {
+            const digits = val.replace(/\D/g, '');
+            contatoInput.setAttribute('inputmode', 'tel');
+            contatoInput.maxLength = 16;
+            contatoInput.value = maskPhoneBR(digits);
+        } else {
+            contatoInput.setAttribute('inputmode', 'email');
+            contatoInput.maxLength = 254;
+            contatoInput.value = val;
+        }
     }
 
-    if (/^[\d()\s\-]*$/.test(val)) {
-        const digits = val.replace(/\D/g, "");
-        e.target.setAttribute("inputmode", "tel");
-        e.target.maxLength = 16;
-        e.target.value = maskPhoneBR(digits);
-    } else {
-        e.target.setAttribute("inputmode", "email");
-        e.target.maxLength = 254;
-        e.target.value = val;
-    }
-}
-
-// Função para alternar abas
-function showTab(tab) {
-    if (tab === "cadastro") {
-        btnCadastro.classList.add("active");
-        btnLogin.classList.remove("active");
-        formCadastro.classList.add("active");
-        formLogin.classList.remove("active");
-    } else {
-        btnLogin.classList.add("active");
-        btnCadastro.classList.remove("active");
-        formLogin.classList.add("active");
-        formCadastro.classList.remove("active");
-    }
-}
-
-// Eventos de clique nos botões
-btnCadastro.addEventListener("click", () => showTab("cadastro"));
-btnLogin.addEventListener("click", () => showTab("login"));
-
-// Após cadastro, redirecionar automaticamente para Login
-btnEnviarCadastro.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    // NOVO: Verificação de campos vazios para o cadastro
-    if (!cadastroInput.value.trim() || !senhaCadastroInput.value.trim() || !confirmarSenhaInput.value.trim()) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-    }
-
-    if (senhaCadastroInput.value !== confirmarSenhaInput.value) {
-        alert("As senhas não coincidem. Por favor, tente novamente.");
-        return;
+    if (contatoInput) {
+        applyContatoMask();
+        contatoInput.addEventListener('input', applyContatoMask);
+        contatoInput.addEventListener('blur', applyContatoMask);
+        contatoInput.addEventListener('paste', () => setTimeout(applyContatoMask, 0));
     }
     
-    const dadosUsuario = {
-        contato: cadastroInput.value,
-        senha: senhaCadastroInput.value
+
+    const calcularEExibirIMC = () => {
+        const altura = parseFloat(alturaInput.value);
+        const pesoKg = parseFloat(pesoInput.value);
+
+        if (altura > 0 && pesoKg > 0) {
+            const imc = pesoKg / (altura * altura);
+            // Salva o IMC no dataset para ser acessado no submit
+            resultadoImcInput.dataset.imc = imc.toFixed(2);
+            resultadoImcInput.value = `Seu IMC é: ${imc.toFixed(2)}`;
+        } else {
+            resultadoImcInput.value = '';
+            resultadoImcInput.dataset.imc = '';
+        }
     };
 
-    localStorage.setItem('dadosUsuario', JSON.stringify(dadosUsuario));
+    alturaInput.addEventListener('input', calcularEExibirIMC);
+    pesoInput.addEventListener('input', calcularEExibirIMC);
 
-    alert("Cadastro realizado com sucesso!");
-    showTab("login");
-});
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-// Aplica a nova máscara a ambos os campos
-function addMaskListeners(inputElement) {
-    if (inputElement) {
-        inputElement.addEventListener("input", applyContatoMask);
-        inputElement.addEventListener("blur", applyContatoMask);
-        inputElement.addEventListener("paste", () => setTimeout(applyContatoMask, 0));
-    }
-}
-
-addMaskListeners(cadastroInput);
-addMaskListeners(loginInput);
+        // 1. Coleta e validação dos dados
+        const nome = document.getElementById('nome').value.trim();
+        const idade = parseInt(document.getElementById('idade').value);
+        const sexo = document.getElementById('sexo').value;
+        const altura = parseFloat(alturaInput.value);
+        const pesoKg = parseFloat(document.getElementById('peso').value);
+        const contato = contatoInput.value;
+        const imc = resultadoImcInput.dataset.imc ? parseFloat(resultadoImcInput.dataset.imc) : null;
 
 
-// Ao clicar em 'Entrar', salva o contato e redireciona
-btnEnviarLogin.addEventListener("click", () => {
+        if (altura > 3.99) {
+            alert('A altura máxima permitida é de 3.99 metros.');
+            return;
+        }
 
-    // NOVO: Verificação de campos vazios para o login
-    if (!loginInput.value.trim() || !senhaLoginInput.value.trim()) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-    }
+        if (!nome || !idade || !sexo || !altura || !pesoKg || !contato || !imc) {
+            alert('Por favor, preencha todos os campos e calcule seu IMC.');
+            return;
+        }
 
-    const dadosExistentes = JSON.parse(localStorage.getItem('dadosUsuario')) || {};
-    
-    const contatoDigitado = loginInput.value;
-    const senhaDigitada = senhaLoginInput.value;
+        // 2. Cria o objeto de dados do usuário
+        const dadosUsuario = {
+            nome: nome,
+            idade: idade,
+            sexo: sexo,
+            altura: altura,
+            peso: pesoKg,
+            contato: normalizeLogin(contato),
+            imc: imc,
+            // CHAVE ESSENCIAL: Data de início para o cálculo da semana no paginainicial.js
+            dataInicio: new Date().toISOString() 
+        };
+        
+        // 3. SALVA OS DADOS CADASTRAIS (Chave: 'dadosUsuario')
+        localStorage.setItem('dadosUsuario', JSON.stringify(dadosUsuario));
 
-    if (dadosExistentes.contato === contatoDigitado && dadosExistentes.senha === senhaDigitada) {
-        alert("Login realizado com sucesso!");
-        window.location.href = "../formulario/formulario.html";
-    } else {
-        alert("Credenciais inválidas. Verifique seu email/telefone e senha.");
-    }
+        // 4. Redireciona para a próxima etapa (avaliação)
+        window.location.href = "../avaliacao/avaliacao.html";
+    });
 });
