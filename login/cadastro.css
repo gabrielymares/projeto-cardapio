@@ -1,167 +1,161 @@
 /* Reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
 }
 
 body {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 /* Container principal dividido */
 .container {
-  display: flex;
-  width: 100%;
-  height: 100vh;
+    display: flex;
+    width: 100%;
+    height: 100vh;
 }
 
 /* Metade esquerda */
 .left-panel {
-  flex: 1;
-  background: #8fa248;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 40px;
+    flex: 1;
+    background: #8fa248;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
 }
 
 .left-panel h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
 }
 
 .left-panel .sub {
-  font-weight: bold;
-  font-size: 0.9rem;
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
 .right-panel {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60px 40px 40px 40px; /* ← Mais espaço no topo */
+    flex: 1;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px 40px 40px; 
 }
 
+/* Logo ÚNICA e com tamanho adequado para o container */
 .logo {
-  width: 250px; /* ← Tamanho maior */
-  height: auto;
-  margin-bottom: 30px;
-}
-
-/* Logo fora do container */
-.logo {
-  width: 500px;
-  height: auto;
-  margin-bottom: 30px;
-  display: block;
+    width: 300px; /* Tamanho que cabe dentro do login-box */
+    height: auto;
+    margin-bottom: 30px;
+    display: block; /* Garante que ocupe a linha inteira para centralizar */
 }
 
 /* Caixa de login */
 .login-box {
-  background: #eeeeee;
-  padding: 40px 30px;
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  text-align: center;
-  width: 350px;
+    background: #eeeeee;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 350px;
 }
 
 /* Tabs */
 .tab-buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 .tab {
-  flex: 1;
-  padding: 10px 0;
-  border: none;
-  cursor: pointer;
-  font-weight: normal;   
-  font-size: 1rem;       
-  border-radius: 8px;
-  margin: 0 5px;
-  background: #ddd;
-  color: #535a3a;
-  transition: 0.3s;
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    cursor: pointer;
+    font-weight: normal; 	
+    font-size: 1rem; 	
+    border-radius: 8px;
+    margin: 0 5px;
+    background: #ddd;
+    color: #535a3a;
+    transition: 0.3s;
 }
 
 .tab.active {
-  background: #8fa248;
-  color: #dddddd;
-  font-weight: normal;   
+    background: #8fa248;
+    color: #dddddd;
+    font-weight: normal; 
 }
 
 /* Inputs */
 input {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 8px;
-  background: #8fa248;
-  color: #dddddd;
-  font-size: 1rem;
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: #8fa248;
+    color: #dddddd;
+    font-size: 1rem;
 }
 
 input::placeholder {
-  color: #ddd;
+    color: #ddd;
 }
 
 /* Botão enviar */
 .submit {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #8fa248;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #8fa248;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 .submit:hover {
-  background: #4c532c;
+    background: #4c532c;
 }
 
 .form {
-  display: none;
+    display: none;
 }
 
 .form.active {
-  display: block;
+    display: block;
 }
 
 /* Responsivo */
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-  }
-  
-  .left-panel {
-    flex: none;
-    min-height: 30vh;
-  }
-  
-  .right-panel {
-    flex: none;
-    min-height: 70vh;
-  }
-  
-  .login-box {
-    width: 90%;
-    max-width: 350px;
-  }
+    .container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .left-panel {
+        flex: none;
+        min-height: 30vh;
+    }
+    
+    .right-panel {
+        flex: none;
+        min-height: 70vh;
+    }
+    
+    .login-box {
+        width: 90%;
+        max-width: 350px;
+    }
 }
