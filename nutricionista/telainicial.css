@@ -1,0 +1,212 @@
+:root {
+    /* Paleta baseada na tela de Login */
+    --main-green: #8fa248;           /* O verde principal (#8fa248) */
+    --dark-green-hover: #6d773e;     /* Verde mais escuro para hover */
+    --light-gray-bg: #f0f0f0;        /* Fundo claro geral */
+    --box-bg-color: #eeeeee;         /* Fundo das caixas e links não ativos (como o .login-box) */
+    --text-color-dark: #333333;      /* Cor principal do texto (Dark Gray) */
+    --text-color-green: #535a3a;     /* Texto para botões não ativos (baseado no .tab) */
+    --active-text-color: #ffffff;    /* Texto branco para elementos ativos */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    /* Mantenha a fonte Poppins ou Arial se não tiver Poppins linkada */
+    font-family: 'Poppins', Arial, sans-serif; 
+}
+
+body {
+    background-color: var(--light-gray-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    /* Cor de fundo do cabeçalho */
+    background-color: var(--main-green); 
+    color: var(--active-text-color); /* Texto branco */
+    padding: 20px 40px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.page-container {
+    display: flex;
+    flex-grow: 1;
+}
+
+.sidebar {
+    width: 250px;
+    /* Usando um gradiente de verde principal para um verde mais escuro */
+    background-color: var(--main-green);
+    background-image: linear-gradient(180deg, var(--main-green) 0%, var(--dark-green-hover) 100%);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-link {
+    background-color: var(--box-bg-color); /* Fundo da caixa cinza claro */
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: var(--text-color-green); /* Cor do texto padrão (verde escuro) */
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link.active {
+    background-color: var(--active-text-color); /* Fundo branco */
+    color: var(--text-color-dark); /* Texto escuro no ativo */
+}
+
+.logo-placeholder {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.logo-placeholder img {
+    max-width: 100px;
+    height: auto;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.content-header h2 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.content-header h3 {
+    font-size: 1.2em;
+    font-weight: 400;
+    color: var(--text-color-dark);
+    text-transform: uppercase;
+}
+
+.content-body {
+    display: flex;
+    gap: 30px;
+}
+
+.button-container {
+    display: flex; 
+    flex-direction: column;
+    gap: 10px; 
+    margin-top: 20px;
+}
+
+.button { 
+    text-decoration: none; 
+    padding: 12px 24px; 
+    background-color: var(--main-green); /* Botão principal no verde */
+    color: var(--active-text-color); /* Texto branco no botão principal */
+    border-radius: 5px; 
+    font-weight: bold; 
+    transition: background-color 0.3s ease; 
+}
+
+.button:hover {
+    background-color: var(--dark-green-hover); /* Hover para verde escuro */
+}
+
+.button.active {
+    background-color: var(--active-text-color); /* Fundo branco */
+    color: var(--text-color-dark); /* Texto escuro */
+}
+
+.tasks-container {
+    flex-grow: 1;
+    background-color: var(--box-bg-color); /* Fundo da caixa de tarefas */
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tasks-container ul,
+.conditions-list ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tasks-container ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+}
+
+.task-number {
+    font-weight: 600;
+    color: var(--text-color-dark);
+}
+
+.side-info {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 250px;
+}
+
+.score-box,
+.conditions-list {
+    background-color: var(--box-bg-color); /* Fundo da caixa de score/condições */
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: var(--text-color-dark);
+    font-weight: 600;
+}
+
+.conditions-list ul {
+    list-style: none;
+}
+
+/* Novo CSS para a página de perfil */
+.profile-card {
+    background-color: var(--box-bg-color);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h2 {
+    font-size: 1.5em;
+    color: var(--text-color-dark);
+    margin-bottom: 20px;
+}
+
+.profile-info p {
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+}
+
+.profile-info strong {
+    font-weight: 600;
+}

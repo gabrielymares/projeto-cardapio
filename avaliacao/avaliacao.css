@@ -1,0 +1,147 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1.6;
+    
+    /* REMOVE esse padding se não quiser espaço extra */
+    margin: 0;
+    height: 100vh; /* altura total da tela */
+    
+    display: flex;
+    justify-content: center; /* centraliza na horizontal */
+    align-items: center;     /* centraliza na vertical */
+    background-color: #f0f0f0;
+}
+
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #8fa248; /* cinza médio */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* ===== HEADER ===== */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+header p {
+    font-size: 16px;
+    color: #cccccc;
+}
+
+/* ===== ABAS ===== */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.tab-button {
+    background: #3a3a3a;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    transition: background 0.3s;
+}
+.tab-button:hover {
+    background: #555;
+}
+.tab-button.active {
+    background: #ffffff;
+    color: #22291f;
+    font-weight: bold;
+}
+
+/* ===== CONTEÚDO DAS ABAS ===== */
+.tab-content {
+    display: none;
+    background: #7c8d3e;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+}
+.tab-content.active {
+    display: block;
+}
+
+/* ===== PERGUNTAS ===== */
+.pergunta {
+    background: #ffffff;
+    padding: 12px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pergunta span {
+    font-size: 14px;
+    color: #aaa;
+}
+.pergunta.ativa {
+    background: #555;
+}
+
+/* ===== RESPOSTAS ===== */
+.respostas {
+    display: none;
+    margin: 10px 0 15px 0;  /* MUDOU: removido o 20px da esquerda */
+    padding: 10px;
+    background: #f3f3f3;
+    border-radius: 5px;
+}
+.respostas.active {
+    display: block;
+}
+.respostas label {
+    display: block;
+    margin: 5px 0;
+    cursor: pointer;
+}
+/* ===== BOTÕES ===== */
+button[type="submit"] {
+    background: #ffffff;
+    color: #b8b8b8;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+button[type="submit"]:hover {
+    background: #cccccc;
+}
+
+/* ===== CAMPO OUTROS ===== */
+.campo-outros {
+    margin-left: 5px;
+    padding: 5px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: #a0a0a0;
+    color: #fff;
+}

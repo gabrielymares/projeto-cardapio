@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passe Leve</title>
+    <link rel="stylesheet" href="./formulario.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="form-container">
+                <h2 class="form-title">informe seus dados</h2>
+                <form id="dataForm">
+                    <input type="text" id="nome" placeholder="Nome" required>
+                    <input type="number" id="idade" placeholder="Idade" min="0" required>
+                    <select id="sexo" required>
+                        <option value="" disabled selected>Sexo</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="nao-informado">Não Informar</option>
+                    </select>
+                    
+                    <input type="text" id="contato" placeholder="Telefone ou E-mail" required>
+                    <input type="number" id="altura" placeholder="Altura (m.cm, Ex: 1.75)" min="0.1" step="0.01" required>
+                    <input type="number" id="peso" placeholder="Peso (kg)" min="0.1" step="0.1" required>
+                    
+                    <input type="text" id="resultado-imc-input" placeholder="Seu IMC aparecerá aqui" readonly>
+                    
+                    <button type="submit" class="btn-confirmar">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./formulario.js"></script>
+</body>
+</html>
