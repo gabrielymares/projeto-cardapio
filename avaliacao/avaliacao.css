@@ -1,36 +1,53 @@
-/* ===== RESET ===== */
+/* ===== RESET e PALETA DE CORES (Baseado no seu exemplo) ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ===== BODY ===== */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    color: #000000;
-    line-height: 1.6;
-    
-    /* REMOVE esse padding se não quiser espaço extra */
-    margin: 0;
-    height: 100vh; /* altura total da tela */
-    
-    display: flex;
-    justify-content: center; /* centraliza na horizontal */
-    align-items: center;     /* centraliza na vertical */
-    background-color: #f0f0f0;
+:root {
+    /* Cores principais do seu exemplo */
+    --main-green: #8fa248;
+    --box-bg-color: #dfeddc;
+    --dark-green-hover: #4c532c;
+    --light-gray: #f0f0f0;
+    --white: #ffffff;
+    --dark-text: #333333;
+    --placeholder-color: #888888;
 }
 
+/* ===== BODY (Com fundo de imagem simulado) ===== */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    
+    /* Configurações de centralização e fundo do seu exemplo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* min-height para garantir que funciona sem 'overflow: hidden' */
+    background-color: var(--light-gray);
+    
+    /* Simulação do fundo com imagem (você deve substituir 'Dinfor.jpg') */
+    /* REMOVA as linhas abaixo se não quiser o fundo de imagem */
+    /* background-image: url('Dinfor.jpg'); 
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; */
+}
 
-/* ===== CONTAINER ===== */
+/* ===== CONTAINER (Substitui o .form-container do seu exemplo) ===== */
 .container {
-    max-width: 900px;
-    margin: auto;
-    background: #8fa248; /* cinza médio */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    max-width: 600px; /* Largura ajustada para questionário */
+    width: 90%;
+    margin: 20px auto;
+    background: var(--box-bg-color); /* Fundo #dfeddc */
+    padding: 30px;
+    border-radius: 20px; /* Bordas arredondadas como no exemplo */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
 }
 
 /* ===== HEADER ===== */
@@ -40,108 +57,190 @@ header {
 }
 header h1 {
     font-size: 24px;
-    margin-bottom: 10px;
-    color: #ffffff;
+    margin-bottom: 5px;
+    color: var(--main-green); /* Cor verde do seu exemplo */
+    font-weight: bold;
 }
 header p {
     font-size: 16px;
-    color: #cccccc;
+    color: var(--dark-text);
 }
 
-/* ===== ABAS ===== */
+/* Estilo do link 'voltar' (Opcional) */
+.back-button-arrow {
+    background-color: var(--main-green); 
+    color: white; 
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px 10px 30px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    position: relative; 
+}
+.back-button-arrow:hover {
+    background-color: var(--dark-green-hover); 
+}
+.back-button-arrow::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid white; 
+}
+
+/* ===== ABAS (Tabs) ===== */
 .tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 .tab-button {
-    background: #3a3a3a;
+    background: var(--main-green); /* Botão inativo com cor principal */
     border: none;
-    padding: 10px 20px;
-    margin: 0 5px;
-    color: #ffffff;
+    padding: 10px 15px;
+    margin: 0 2px;
+    color: var(--white);
     cursor: pointer;
-    border-radius: 5px 5px 0 0;
+    border-radius: 6px 6px 0 0;
     transition: background 0.3s;
+    font-size: 15px;
 }
 .tab-button:hover {
-    background: #555;
+    background: var(--dark-green-hover);
 }
 .tab-button.active {
-    background: #ffffff;
-    color: #22291f;
+    background: var(--box-bg-color); /* Fundo da aba ativa igual ao container */
+    color: var(--main-green);
     font-weight: bold;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 
 /* ===== CONTEÚDO DAS ABAS ===== */
 .tab-content {
     display: none;
-    background: #7c8d3e;
+    background: var(--box-bg-color); /* Fundo da seção de conteúdo */
     padding: 20px;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 15px 15px;
+    border-top: none; 
 }
 .tab-content.active {
     display: block;
 }
 
-/* ===== PERGUNTAS ===== */
+/* ===== PERGUNTAS (Estilo de Input/Campo) ===== */
 .pergunta {
-    background: #ffffff;
-    padding: 12px;
+    background: var(--white); /* Fundo branco para o campo de pergunta */
+    color: var(--dark-text);
+    padding: 15px;
     margin: 10px 0;
     cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
+    border-radius: 10px; /* Bordas arredondadas (como nos seus inputs) */
+    font-weight: 600;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: background 0.2s;
+}
+.pergunta:hover {
+    background: #f5f5f5;
 }
 .pergunta span {
-    font-size: 14px;
-    color: #aaa;
+    font-size: 16px;
+    color: var(--main-green);
+    transition: transform 0.3s;
 }
-.pergunta.ativa {
-    background: #555;
+.pergunta.active span {
+    transform: rotate(180deg);
 }
 
-/* ===== RESPOSTAS ===== */
+/* ===== RESPOSTAS (Conteúdo expandido) ===== */
 .respostas {
     display: none;
-    margin: 10px 0 15px 0;  /* MUDOU: removido o 20px da esquerda */
-    padding: 10px;
-    background: #f3f3f3;
-    border-radius: 5px;
+    margin: -10px 0 15px 0; 
+    padding: 15px 20px;
+    background: #e9f3e8; /* Cor suave para contraste com o container */
+    border-radius: 0 0 10px 10px;
+    border-top: 2px solid var(--main-green);
 }
 .respostas.active {
     display: block;
 }
 .respostas label {
-    display: block;
-    margin: 5px 0;
+    display: flex;
+    align-items: flex-start; /* Alinha o texto do label com o checkbox/radio */
+    margin: 10px 0;
     cursor: pointer;
+    color: var(--dark-text);
 }
-/* ===== BOTÕES ===== */
-button[type="submit"] {
-    background: #ffffff;
-    color: #b8b8b8;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-button[type="submit"]:hover {
-    background: #cccccc;
+.respostas input[type="radio"], .respostas input[type="checkbox"] {
+    margin-right: 8px;
+    margin-top: 3px;
+    accent-color: var(--main-green);
 }
 
-/* ===== CAMPO OUTROS ===== */
-.campo-outros {
-    margin-left: 5px;
-    padding: 5px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background: #a0a0a0;
-    color: #fff;
+/* Estilo para campos de texto (textarea e input text) - Usando o estilo do seu exemplo */
+.respostas textarea, 
+.respostas input[type="text"].campo-outros {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    color: var(--dark-text);
+    font-size: 1em;
+    outline: none;
+    resize: vertical;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Placeholder color matching your example's text color */
+.respostas textarea::placeholder, 
+.respostas input[type="text"].campo-outros::placeholder {
+    color: var(--placeholder-color);
+}
+
+
+/* ===== BOTÕES (btn-confirmar do seu exemplo) ===== */
+button[type="submit"] {
+    /* Baseado no .btn-confirmar do seu exemplo */
+    width: 100%;
+    max-width: 350px; /* Limita a largura do botão de envio */
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--main-green);
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    align-self: center; /* Centraliza se for aplicado ao form-container */
+}
+button[type="submit"]:hover {
+    background: var(--dark-green-hover); /* Cor de hover do seu exemplo */
+}
+
+/* ===== RESPONSIVIDADE (Conforme seu exemplo) ===== */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+    header h1 {
+        font-size: 20px;
+    }
+    .tab-button {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+    button[type="submit"] {
+        padding: 12px;
+        font-size: 1em;
+    }
 }
