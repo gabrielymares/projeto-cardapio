@@ -1,95 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação de Saúde</title>
-    <link rel="stylesheet" href="./avaliacao.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário de Saúde Nutricional</title>
+    <link rel="stylesheet" href="./avaliacao.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Avaliação de Saúde e Bem-estar</h1>
-            <p>Complete os questionários para uma avaliação completa</p>
-        </header>
+    <div class="container">
+        <header>
+            <h1>Questionário Rápido de Saúde</h1>
+            <p>Responda para uma avaliação inicial do seu perfil alimentar.</p>
+        </header>
 
-        <div class="tabs">
-            <button class="tab-button active" onclick="abrirAba(event, 'alimentacao')">Alimentação</button>
-            <button class="tab-button" onclick="abrirAba(event, 'exercicios')">Exercícios</button>
-            <button class="tab-button" onclick="abrirAba(event, 'sono')">Sono</button>
-            <button class="tab-button" onclick="abrirAba(event, 'mental')">Saúde Mental</button>
-        </div>
+        <div class="tabs">
+                        <button class="tab-button active" onclick="abrirAba(event, 'saude')">Saúde Geral</button>
+            <button class="tab-button" onclick="abrirAba(event, 'habitos')">Hábitos Alimentares</button>
+            <button class="tab-button" onclick="abrirAba(event, 'objetivo')">Objetivos</button>
+        </div>
 
-        <form id="formulario-avaliacao">
-            <!-- ABA ALIMENTAÇÃO -->
-            <div id="alimentacao" class="tab-content active">
-                <div class="pergunta" onclick="toggleResposta(this)">Sua alimentação é saudável? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="radio" name="p1" value="10"> Sim</label>
-                    <label><input type="radio" name="p1" value="0"> Não</label>
-                    <label><input type="radio" name="p1" value="5"> Mais ou Menos</label>
-                </div>
+        <form id="formulario-avaliacao">
+                        <div id="saude" class="tab-content active">
+                
+                                <div class="pergunta" onclick="toggleResposta(this)">1. Possui alguma doença diagnosticada? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="radio" name="p1_doenca" value="sim" onclick="mostrarCampoOutros(this, true)"> Sim</label>
+                    <label><input type="radio" name="p1_doenca" value="nao" onclick="mostrarCampoOutros(this, false)"> Não</label>
+                    <input type="text" name="p1_outros" class="campo-outros" style="display:none;" placeholder="Especifique a doença">
+                </div>
 
-                <div class="pergunta" onclick="toggleResposta(this)">Você possui alguma alergia alimentar? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="checkbox" name="alergia" value="nenhuma" onclick="marcarNenhuma(this)"> Nenhuma</label>
-                    <label><input type="checkbox" name="alergia" value="leite"> Leite / Lactose</label>
-                    <label><input type="checkbox" name="alergia" value="gluten"> Glúten / Trigo</label>
-                    <label><input type="checkbox" name="alergia" value="outros" onclick="mostrarCampoOutros(this)"> Outros:
-                        <input type="text" name="alergia_outros" class="campo-outros" style="display:none;" placeholder="Especifique">
-                    </label>
-                </div>
+                                <div class="pergunta" onclick="toggleResposta(this)">2. Possui alguma alergia ou intolerância alimentar? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="checkbox" name="p2_alergia" value="nenhuma" onclick="marcarNenhuma(this)"> Nenhuma</label>
+                    <label><input type="checkbox" name="p2_alergia" value="lactose"> Leite / Lactose</label>
+                    <label><input type="checkbox" name="p2_alergia" value="gluten"> Glúten</label>
+                    <label><input type="checkbox" name="p2_alergia" value="outros" onclick="mostrarCampoOutros(this)"> Outros:
+                        <input type="text" name="p2_outros" class="campo-outros" style="display:none;" placeholder="Especifique">
+                    </label>
+                </div>
 
-                <div class="pergunta" onclick="toggleResposta(this)">Você tem bons hábitos de saúde? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="radio" name="p3" value="10"> Sim</label>
-                    <label><input type="radio" name="p3" value="0"> Não</label>
-                </div>
+                                <div class="pergunta" onclick="toggleResposta(this)">3. Tem alguma restrição alimentar por orientação médica? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="radio" name="p3_restricao" value="sim" onclick="mostrarCampoOutros(this, true)"> Sim</label>
+                    <label><input type="radio" name="p3_restricao" value="nao" onclick="mostrarCampoOutros(this, false)"> Não</label>
+                    <input type="text" name="p3_outros" class="campo-outros" style="display:none;" placeholder="Especifique a restrição">
+                </div>
 
-                <div class="pergunta" onclick="toggleResposta(this)">Você possui alguma restrição alimentar? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="checkbox" name="restricao" value="nenhuma" onclick="marcarNenhuma(this)"> Nenhuma</label>
-                    <label><input type="checkbox" name="restricao" value="diabetes"> Diabetes</label>
-                    <label><input type="checkbox" name="restricao" value="hipertensao"> Hipertensão</label>
-                    <label><input type="checkbox" name="restricao" value="outros" onclick="mostrarCampoOutros(this)"> Outros:
-                        <input type="text" name="restricao_outros" class="campo-outros" style="display:none;" placeholder="Especifique">
-                    </label>
-                </div>
-            </div>
+                                <div class="pergunta" onclick="toggleResposta(this)">4. Pratica atividade física? Com que frequência? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="radio" name="p4_exercicio" value="diariamente"> Diariamente</label>
+                    <label><input type="radio" name="p4_exercicio" value="algumas_vezes"> 1-3 vezes por semana</label>
+                    <label><input type="radio" name="p4_exercicio" value="raramente"> Raramente ou nunca</label>
+                </div>
 
-            <!-- ABA EXERCÍCIOS -->
-            <div id="exercicios" class="tab-content">
-                <div class="pergunta" onclick="toggleResposta(this)">Com que frequência você pratica exercícios físicos? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="radio" name="p4" value="10"> Diariamente</label>
-                    <label><input type="radio" name="p4" value="5"> 1-2 vezes por semana</label>
-                    <label><input type="radio" name="p4" value="0"> Raramente ou nunca</label>
-                </div>
-            </div>
+            </div>
 
-            <!-- ABA SONO -->
-            <div id="sono" class="tab-content">
-                <div class="pergunta" onclick="toggleResposta(this)">Quantas horas você dorme por noite? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="radio" name="p5" value="10"> 7-9 horas</label>
-                    <label><input type="radio" name="p5" value="5"> 5-6 horas</label>
-                    <label><input type="radio" name="p5" value="0"> Menos de 5 horas</label>
-                </div>
-            </div>
+                        <div id="habitos" class="tab-content">
+                
+                                <div class="pergunta" onclick="toggleResposta(this)">5. Como você descreveria seu apetite? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="radio" name="p5_apetite" value="baixo"> Baixo</label>
+                    <label><input type="radio" name="p5_apetite" value="normal"> Normal</label>
+                    <label><input type="radio" name="p5_apetite" value="aumentado"> Aumentado</label>
+                </div>
+                
+                                <div class="pergunta" onclick="toggleResposta(this)">7. Em quantas refeições por dia você costuma comer? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="radio" name="p7_refeicoes" value="2_ou_menos"> 2 ou menos</label>
+                    <label><input type="radio" name="p7_refeicoes" value="3_ou_4"> 3 a 4</label>
+                    <label><input type="radio" name="p7_refeicoes" value="5_ou_mais"> 5 ou mais</label>
+                </div>
 
-            <!-- ABA MENTAL -->
-            <div id="mental" class="tab-content">
-                <div class="pergunta" onclick="toggleResposta(this)">Como você se sente na maior parte do tempo? <span>▼</span></div>
-                <div class="respostas">
-                    <label><input type="radio" name="p6" value="10"> Feliz</label>
-                    <label><input type="radio" name="p6" value="5"> Neutro</label>
-                    <label><input type="radio" name="p6" value="0"> Triste</label>
-                </div>
-                <button type="submit">Enviar Avaliação</button>
-            </div>
-        </form>
-    </div>
+                                <div class="pergunta" onclick="toggleResposta(this)">8. Tem algum alimento que não gosta ou evita? <span>▼</span></div>
+                <div class="respostas">
+                    <textarea name="p8_alimentos_evita" rows="2" placeholder="Ex: Carne vermelha, pimentão, etc."></textarea>
+                </div>
 
-    <script src="./avaliacao.js"></script>
+                                <div class="pergunta" onclick="toggleResposta(this)">9. Quais alimentos/bebidas você consome com mais frequência no dia a dia? <span>▼</span></div>
+                <div class="respostas">
+                    <textarea name="p9_frequencia" rows="3" placeholder="Ex: Refrigerante, pão branco, café com açúcar, frutas, verduras."></textarea>
+                </div>
+                
+                                <div class="pergunta" onclick="toggleResposta(this)">10. Costuma sentir fome emocional (por ansiedade, estresse ou tristeza)? <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="radio" name="p10_emocional" value="sempre"> Sempre</label>
+                    <label><input type="radio" name="p10_emocional" value="as_vezes"> Às vezes</label>
+                    <label><input type="radio" name="p10_emocional" value="nunca"> Nunca</label>
+                </div>
+            </div>
+
+                        <div id="objetivo" class="tab-content">
+                
+                                <div class="pergunta" onclick="toggleResposta(this)">6. Qual é o seu objetivo com a alimentação? (Pode selecionar mais de um) <span>▼</span></div>
+                <div class="respostas">
+                    <label><input type="checkbox" name="p6_objetivo" value="emagrecer"> Emagrecer</label>
+                    <label><input type="checkbox" name="p6_objetivo" value="ganhar_peso"> Ganhar peso</label>
+                    <label><input type="checkbox" name="p6_objetivo" value="ganhar_massa"> Ganhar massa muscular</label>
+                    <label><input type="checkbox" name="p6_objetivo" value="manter_peso"> Manter o peso</label>
+                    <label><input type="checkbox" name="p6_objetivo" value="melhorar_saude"> Melhorar a saúde/energia</label>
+                </div>
+                
+                <button type="submit">Enviar Questionário</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="./avaliacao.js"></script>
 </body>
 </html>
