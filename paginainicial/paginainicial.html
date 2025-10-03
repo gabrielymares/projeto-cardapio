@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passe Leve</title>
+    <title>Programa de Adaptação - 12 Semanas</title>
     <link rel="stylesheet" href="paginainicial.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -18,44 +18,42 @@
     <div class="page-container">
         <aside class="sidebar">
            <div class="button-container">
-            <a href="../paginainicial/paginainicial.html" class="button">Inicial</a>
+            <a href="../paginainicial/paginainicial.html" class="button active">Inicial</a>
             <a href="../perfil/perfil.html"  class="button">Perfil</a>
            </div>
             <div class="logo-placeholder">
-                <img src="../imagens/logoescura.png" alt="Logo Passe Leve">
+                <img src="../imagens/logobranca.png" alt="Logo Passe Leve">
             </div>
         </aside>
-
+           
         <main class="main-content">
             <div class="content-header">
-                <h2 id="semana-atual-titulo">Carregando semana...</h2>  </h2>
+                <h2 id="semana-atual-titulo">Carregando semana...</h2>
                 <h3>INTRODUÇÃO</h3>
             </div>
 
             <div class="content-body">
                 <div class="tasks-container">
                     <ul>
+                        <!-- As tarefas serão carregadas dinamicamente pelo JavaScript -->
                         <li>
-                            <span>Beba 500 ml de água</span>
-                            <span class="task-number">2</span>
-                        </li>
-                        <li>
-                            <span>Leia rótulos de alimentos</span>
-                        </li>
-                        <li>
-                            <span>Coma 2 frutas</span>
-                            <span class="task-number">4</span>
+                            <span>Carregando tarefas...</span>
                         </li>
                     </ul>
                 </div>
                 
                 <div class="side-info">
                     <div class="score-box">
-                        <p>Pontuação <span id="pontuacao-usuario">--</span> / <span id="pontuacao-total">--</span></p>
+                        <p>Pontuação <span id="pontuacao-total">0</span> / <span id="pontuacao-usuario">0</span></p>
                     </div>
+                    
+                    <div id="mensagem-motivacional" class="mensagem-motivacional inicio">
+                        🌱 Comece sua jornada! Marque suas primeiras tarefas.
+                    </div>
+                    
                     <div class="conditions-list">
                         <ul>
-                            <li>Condições Intestinais</li>
+                            <li>Carregando condições...</li>
                         </ul>
                     </div>
                 </div>
