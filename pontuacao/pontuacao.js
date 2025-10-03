@@ -8,25 +8,24 @@ function mostrarErro(mensagem) {
     document.getElementById("detalhes-extras").innerHTML = `
         <p><strong>O que fazer:</strong></p>
         <ol>
-            <li>Volte e refaça o questionário</li>
+            <li>Volte e refaça o questionário (Página anterior)</li>
             <li>Verifique se respondeu todas as perguntas</li>
             <li>Se o problema persistir, recarregue a página</li>
         </ol>
     `;
 
-    // Esta linha estava causando um erro, pois o botão "btn-voltar" não existe.
-    const btnVoltar = document.getElementById("btn-voltar");
-    if(btnVoltar) {
-        btnVoltar.style.display = 'inline-block';
+    // O botão de prosseguir deve sumir em caso de erro
+    const btnProsseguir = document.getElementById("btn-prosseguir");
+    if(btnProsseguir) {
+        btnProsseguir.style.display = 'none';
     }
-
-    document.getElementById("btn-prosseguir").style.display = 'none';
     document.getElementById("acoes-container").style.display = 'block';
 }
 
 function validarDados(dados) {
     const erros = [];
 
+    // Adaptação: Verifica se os campos de pontuação e grupo existem no novo formato
     if (typeof dados.pontuacao !== 'number' || isNaN(dados.pontuacao)) {
         erros.push('Pontuação inválida');
     }
@@ -35,8 +34,14 @@ function validarDados(dados) {
         erros.push('Grupo não identificado');
     }
 
-    if (!Array.isArray(dados.alergias)) {
+    // Adaptação: O novo campo de alergias é p2_alergia
+    if (!Array.isArray(dados.p2_alergia)) {
         erros.push('Dados de alergias corrompidos');
+    }
+    
+    // Opcional: Adiciona verificação para as novas respostas de texto
+    if (typeof dados.p8_alimentos_evita === 'undefined') {
+        erros.push('Dados de hábitos alimentares incompletos');
     }
 
     return erros;
@@ -55,10 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         botaoProsseguir.addEventListener('click', () => {
             // Salvar dados para possível consulta futura
             const dados = JSON.parse(sessionStorage.getItem('resultadoAvaliacao'));
-            localStorage.setItem('ultimaAvaliacao', JSON.stringify({
-                ...dados,
-                visualizadoEm: new Date().toISOString()
-            }));
+            if (dados) {
+                localStorage.setItem('ultimaAvaliacao', JSON.stringify({
+                    ...dados,
+                    visualizadoEm: new Date().toISOString()
+                }));
+            }
 
             // Limpar dados da sessão atual
             sessionStorage.removeItem('resultadoAvaliacao');
@@ -77,7 +84,7 @@ function carregarResultados() {
         const dadosSalvos = sessionStorage.getItem('resultadoAvaliacao');
 
         if (!dadosSalvos) {
-            throw new Error('Nenhum dado de avaliação encontrado. Por favor, refaça o questionário.');
+            throw new Error('Nenhum dado de avaliação encontrado. Por favor, volte e refaça o questionário.');
         }
 
         const dados = JSON.parse(dadosSalvos);
@@ -85,11 +92,13 @@ function carregarResultados() {
         // Validar dados
         const erros = validarDados(dados);
         if (erros.length > 0) {
-            throw new Error(`Dados inválidos encontrados: ${erros.join(', ')}`);
+            // Se houver erros, ainda assim tenta exibir o que foi coletado com uma mensagem de alerta
+            exibirResultado(dados, true); // Passa true para forçar o modo de alerta
+            return;
         }
 
         // Exibir resultado com sucesso
-        exibirResultado(dados);
+        exibirResultado(dados, false);
 
     } catch (error) {
         console.error('Erro ao carregar resultados:', error);
@@ -97,47 +106,80 @@ function carregarResultados() {
     }
 }
 
-function exibirResultado(dados) {
-    // Remover estado de loading
+function exibirResultado(dados, isWarning = false) {
+    // Remover estado de loading e aplicar sucesso/alerta
     const container = document.getElementById('resultado-box');
-    container.className = 'resultado-box sucesso';
+    container.className = isWarning ? 'resultado-box erro' : 'resultado-box sucesso';
 
-    // Preencher dados principais
+    // --- 1. Preencher dados principais (Pontuação e Grupo) ---
     document.getElementById("resultado-pontos").textContent = 
-        `${dados.pontuacao} pontos - ${dados.grupo}`;
+        isWarning ? "⚠️ Dados Inconsistentes" : `${dados.pontuacao} pontos - ${dados.grupo}`;
 
     document.getElementById("resultado-texto").innerHTML = 
-        `🎯 Com base nas suas respostas, você obteve <strong>${dados.pontuacao} pontos</strong> e foi classificado no <strong>${dados.grupo}</strong>!`;
+        isWarning 
+        ? `Seus dados foram salvos, mas houve inconsistências. Revise o questionário. Pontuação calculada: <strong>${dados.pontuacao}</strong>.`
+        : `🎯 Com base nas suas respostas, você obteve <strong>${dados.pontuacao} pontos</strong> e foi classificado no <strong>${dados.grupo}</strong>!`;
 
-    // Mostrar detalhes extras
+    // --- 2. Montar Detalhes Extras ---
     let detalhesHTML = '';
 
-    if (dados.alergias && dados.alergias.length > 0) {
+    // Detalhes de Alergias (p2_alergia)
+    const alergias = Array.isArray(dados.p2_alergia) ? dados.p2_alergia : [];
+    if (alergias.length > 0) {
+        const nomesAlergias = alergias.map(a => {
+            if (a === 'lactose') return 'Leite / Lactose';
+            if (a === 'gluten') return 'Glúten';
+            return a; // Mantém "outros" ou outros valores
+        });
+
         detalhesHTML += `
             <div style="margin-bottom: 15px;">
-                <strong>🚫 Alergias identificadas:</strong>
-                <ul>${dados.alergias.map(a => `<li>${a}</li>`).join('')}</ul>
+                <strong>🚫 Alergias e Intolerâncias:</strong>
+                <ul>${nomesAlergias.map(a => `<li>${a}</li>`).join('')}</ul>
             </div>
         `;
     }
 
-    if (dados.restricoes && dados.restricoes.length > 0) {
+    // Campo de texto de Alergias Outras (p2_outros)
+    const alergiaOutros = dados.p2_alergia_outros || '';
+    if (alergiaOutros.trim()) {
+        detalhesHTML += `<p><strong>Outras Alergias/Intolerâncias:</strong> ${alergiaOutros}</p>`;
+    }
+    
+    // Campo de texto de Restrição Médica (p3_outros) e Doença (p1_outros)
+    const restricaoMedica = dados.p3_restricao_outros || '';
+    const doencaDiagnosticada = dados.p1_doenca_outros || '';
+
+    if (dados.p3_restricao === 'sim' && restricaoMedica.trim()) {
+         detalhesHTML += `<p><strong>⚠️ Restrição por Orientação Médica:</strong> ${restricaoMedica}</p>`;
+    }
+    
+    if (dados.p1_doenca === 'sim' && doencaDiagnosticada.trim()) {
+         detalhesHTML += `<p><strong>🩺 Doença(s) Diagnosticada(s):</strong> ${doencaDiagnosticada}</p>`;
+    }
+    
+    // Objetivo (p6_objetivo)
+    const objetivos = Array.isArray(dados.p6_objetivo) ? dados.p6_objetivo : [];
+    if (objetivos.length > 0) {
+        // Formata os valores para exibição (ex: 'ganhar_massa' -> 'Ganhar Massa Muscular')
+        const nomesObjetivos = objetivos.map(o => o.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()));
         detalhesHTML += `
-            <div style="margin-bottom: 15px;">
-                <strong>⚠️ Restrições alimentares:</strong>
-                <ul>${dados.restricoes.map(r => `<li>${r}</li>`).join('')}</ul>
+            <div style="margin-top: 15px;">
+                <strong>💡 Seus Objetivos:</strong>
+                <ul>${nomesObjetivos.map(o => `<li>${o}</li>`).join('')}</ul>
             </div>
         `;
     }
-
-    // Adicionar campos "Outros" se preenchidos
-    if (dados.alergiaOutros) {
-        detalhesHTML += `<p><strong>Outras alergias:</strong> ${dados.alergiaOutros}</p>`;
-    }
-
-    if (dados.restricaoOutros) {
-        detalhesHTML += `<p><strong>Outras restrições:</strong> ${dados.restricaoOutros}</p>`;
-    }
+    
+    // Respostas de texto (Q8 e Q9)
+    const alimentosEvita = dados.p8_alimentos_evita || 'Não especificado';
+    const alimentosFrequentes = dados.p9_frequencia || 'Não especificado';
+    
+    detalhesHTML += `
+        <hr style="margin: 15px 0; border-top: 1px solid #ccc;">
+        <p><strong>Alimentos que evita:</strong> ${alimentosEvita}</p>
+        <p><strong>Alimentos/Bebidas mais frequentes:</strong> ${alimentosFrequentes}</p>
+    `;
 
     // Adicionar timestamp
     if (dados.timestamp) {
