@@ -1,0 +1,204 @@
+/* Paleta de Cores Consistente */
+:root {
+    --main-green: #8fa248;           /* Verde principal (do seu login) */
+    --dark-green-hover: #4c532c;     /* Verde mais escuro para hover */
+    --box-bg-color: #dfeddc;         /* Fundo da caixa (seu #dfeddc) */
+    --main-text-color: #333;         /* Cor principal do texto */
+    --light-text-color: #555;        /* Cor do título */
+    --error-bg: #f8d7da;             /* Fundo de erro */
+    --error-border: #f5c6cb;         /* Borda de erro */
+    --error-text: #dc3545;           /* Texto de erro */
+}
+
+/* Base e Layout Centralizado */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+/* Caixa Principal de Resultado */
+.resultado-box {
+    background-color: var(--box-bg-color);
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 600px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    color: var(--main-text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Removemos o 'transform: translateX(20%)' para centralizar corretamente */
+}
+
+/* Título e Texto */
+.resultado-box h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+    color: var(--light-text-color);
+}
+
+.resultado-box p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* Botão Prosseguir */
+.botao-prosseguir,
+.resultado-box button {
+    background-color: var(--main-green);
+    color: #fff;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: center;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Estilo responsivo para botões */
+    max-width: 300px;
+}
+
+.botao-prosseguir:hover,
+.resultado-box button:hover {
+    background-color: var(--dark-green-hover);
+}
+
+/* Listas de Detalhes */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
+}
+
+li {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+    color: var(--light-text-color);
+}
+
+/* Estilos de Status e Animação */
+.loading {
+    color: #666;
+}
+
+.erro {
+    color: var(--error-text);
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    animation: fadeIn 0.5s ease-in;
+}
+
+.sucesso {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos dos Detalhes Extras (Alergias/Restrições) */
+.detalhes-extras {
+    text-align: left;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botão de Voltar (Seta) */
+.back-button-arrow {
+    background-color: var(--main-green);
+    color: white; 
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px 10px 30px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    position: absolute; /* Para fixar no canto */
+    top: 20px;
+    right: 20px; 
+}
+
+.back-button-arrow:hover {
+    background-color: var(--dark-green-hover);
+}
+
+.back-button-arrow::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid white; 
+}
+
+/* Regras Responsivas para Telas Menores */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .resultado-box {
+        margin: 0; /* Ocupa a largura total no centro da tela */
+        padding: 25px 15px;
+        box-shadow: none;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .resultado-box h2 {
+        font-size: 22px;
+    }
+    
+    .resultado-box p,
+    #resultado-texto {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    
+    .botao-prosseguir,
+    .resultado-box button {
+        max-width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+    
+    .detalhes-extras {
+        font-size: 14px;
+        padding: 15px 10px;
+    }
+    
+    .back-button-arrow {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px 8px 25px;
+        font-size: 0.9em;
+    }
+    
+    .back-button-arrow::before {
+        left: 8px;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        border-right: 4px solid white;
+    }
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passe Leve</title>
+  <link rel="stylesheet" href="./cadastro.css">
+</head>
+<body>
+  <div class="container">
+   
+    <div class="left-panel">
+      <h1>Seja Bem Vindo(a) ao<br>Passe Leve!</h1>
+      <p class="sub">PLANO DE ADAPTAÇÃO PROGRESSIVA DE HÁBITOS ALIMENTARES</p>
+    </div>
+
+
+   
+    <div class="right-panel">
+      <div class="login-box">
+      
+        <img src="../imagens/logobranca.png" alt="Logo Passe Leve" class="logo">
+
+        
+        <div class="tab-buttons">
+  <button class="tab active" id="btnCadastro">Cadastro</button>
+  <button class="tab" id="btnLogin">Login</button>
+</div>
+
+<div id="formCadastro" class="form active">
+  <input type="text" id="cadastroInput" placeholder="Email ou Telefone">
+  <input type="password" id="senhaCadastroInput" placeholder="Senha">
+  <input type="password" id="confirmarSenhaInput" placeholder="Confirmar Senha">
+  <button class="submit" id="btnEnviarCadastro">Enviar</button>
+</div>
+
+<div id="formLogin" class="form">
+  <input type="text" id="loginInput" placeholder="Email ou Telefone">
+  <input type="password" id="senhaLoginInput" placeholder="Senha">
+  <button class="submit" id="btnEnviarLogin">Entrar</button>
+</div>
+
+  <script src="./cadastro.js"></script>
+</body>
+</html>

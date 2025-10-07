@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programa de Adaptação</title>
+    <link rel="stylesheet" href="./telainicial.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="page-header">
+        <h1>Programa de Adaptação</h1>
+    </header>
+
+    <div class="page-container">
+        <aside class="sidebar">
+            <div class="button-container">
+                <a href="../paginainicial/paginainicial.html" class="button active">Inicial</a>
+                <a href="../perfil/perfil.html" class="button">Perfil</a>
+            </div>
+            <div class="logo-placeholder">
+                <img src="../imagens/logobranca.png" alt="Logo Passe Leve">
+            </div>
+        </aside>
+
+        <!-- Área principal com lista de clientes -->
+        <main class="main-content" id="clientListScreen">
+            <div class="content-header">
+                <h2>Clientes</h2>
+            </div>
+            <div id="clientsList" class="clients-grid">
+                <!-- Cards dos clientes serão inseridos aqui pelo JavaScript -->
+            </div>
+        </main>
+
+        <!-- Tela de detalhes do cliente -->
+        <main class="main-content details-screen" id="clientDetailsScreen" style="display: none;">
+            <button class="back-button" onclick="voltarParaLista()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+
+            <div class="details-container">
+                <div class="details-left">
+                    <div class="info-panel">
+                        <h3>Dados</h3>
+                        <p id="detailNome"></p>
+                        <p id="detailGenero"></p>
+                        <p id="detailAltura"></p>
+                        <p id="detailIdade"></p>
+                        <p id="detailPeso"></p>
+                        <p id="detailTelefone"></p>
+                        <p id="detailIMC"></p>
+                    </div>
+
+                    <div class="info-panel">
+                        <h3>Restrições</h3>
+                        <p id="detailRestricoes"></p>
+                    </div>
+
+                    <div class="info-panel">
+                        <h3>Saúde</h3>
+                        <p id="detailSaude"></p>
+                    </div>
+                </div>
+
+                <div class="details-right">
+                    <div class="week-card">Semana 1</div>
+                    <div class="week-card">Semana 2</div>
+                    <div class="week-card">Semana 3</div>
+                    <div class="week-card">Semana 4</div>
+                    <button class="add-week-button">+</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="telainicial.js"></script>
+</body>
+</html>

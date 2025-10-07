@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Passe Leve</title>
+    <link rel="stylesheet" href="perfil.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="page-header">
+        <h1>Meu Perfil</h1>
+    </header>
+
+    <div class="page-container">
+        <aside class="sidebar">
+            <div class="button-container">
+                <a href="../paginainicial/paginainicial.html" class="button">Inicial</a>
+                <a href="../perfil/perfil.html" class="button active">Perfil</a>
+            </div>
+            <div class="logo-placeholder">
+                <img src="../imagens/logobranca.png" alt="Logo Passe Leve">
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-body">
+                <div class="profile-card">
+                    <h2>Informações Pessoais</h2>
+                    <div class="profile-info">
+                         <p><strong>Nome:</strong> <span id="perfil-nome">--</span></p>
+                    <p><strong>Idade:</strong> <span id="perfil-idade">--</span> anos</p>
+                    <p><strong>Sexo:</strong> <span id="perfil-sexo">--</span></p>
+                    <p><strong>Contato:</strong> <span id="perfil-contato">--</span></p>                                                        
+                    <p><strong>Altura:</strong> <span id="perfil-altura">--</span> m</p>
+                    <p><strong>Peso:</strong> <span id="perfil-peso">--</span> kg</p>
+                    <p><strong>IMC:</strong> <span id="perfil-imc">--</span></p>
+                    </div>
+                </div>
+
+                <div class="side-info">
+                    <div class="score-box">
+                        <p>Pontuação <span id="pontuacao-usuario">--</span> / <span id="pontuacao-total">--</span></p>
+                    </div>
+                    <div class="conditions-list">
+                        <h3>Restrições e Condições</h3>
+                        <ul id="condicoes-lista-perfil">
+                            <li>Carregando...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="perfil.js"></script>
+</body>
+</html>

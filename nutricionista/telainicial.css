@@ -1,0 +1,563 @@
+:root {
+    --main-green: #8fa248;          
+    --dark-green-hover: #4c532c;   
+    --light-gray-bg: #f0f0f0;        
+    --box-bg-color: #eeeeee;         
+    --text-color-dark: #333333;      
+    --text-color-green: #535a3a;     
+    --active-text-color: #ffffff;    
+    --success-green: #4caf50;
+    --warning-orange: #ff9800;
+    --celebration-gold: #ffd700;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Poppins', Arial, sans-serif; 
+}
+
+body {
+    background-color: var(--light-gray-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    background-color: var(--main-green); 
+    color: var(--active-text-color);
+    padding: 20px 40px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.page-container {
+    display: flex;
+    flex-grow: 1;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--main-green);
+    background-image: linear-gradient(180deg, var(--main-green) 0%, var(--dark-green-hover) 100%);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-link {
+    background-color: var(--box-bg-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: var(--text-color-green);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link.active {
+    background-color: var(--active-text-color);
+    color: var(--text-color-dark);
+}
+
+.logo-placeholder {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.logo-placeholder img {
+    max-width: 100px;
+    height: auto;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.content-header h2 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.content-header h3 {
+    font-size: 1.2em;
+    font-weight: 400;
+    color: var(--text-color-dark);
+    text-transform: uppercase;
+}
+
+.content-body {
+    display: flex;
+    gap: 30px;
+}
+
+.button-container {
+    display: flex; 
+    flex-direction: column;
+    gap: 10px; 
+    margin-top: 20px;
+}
+
+.button { 
+    text-decoration: none; 
+    padding: 12px 24px; 
+    background-color: var(--main-green);
+    color: var(--active-text-color);
+    border-radius: 5px; 
+    font-weight: bold; 
+    transition: background-color 0.3s ease; 
+}
+
+.button:hover {
+    background-color: var(--dark-green-hover);
+}
+
+.button.active {
+    background-color: var(--active-text-color);
+    color: var(--text-color-dark);
+}
+
+.tasks-container {
+    flex-grow: 1;
+    background-color: var(--box-bg-color);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tasks-container ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tasks-container ul li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.05em;
+    color: var(--text-color-dark);
+    padding: 12px;
+    background-color: white;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tasks-container ul li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox customizado */
+.task-checkbox {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--main-green);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.task-checkbox:hover {
+    border-color: var(--dark-green-hover);
+    transform: scale(1.1);
+}
+
+.task-checkbox:checked {
+    background-color: var(--success-green);
+    border-color: var(--success-green);
+}
+
+.task-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Label da tarefa */
+.task-label {
+    flex-grow: 1;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+.tarefa-concluida .task-label {
+    text-decoration: line-through;
+    opacity: 0.6;
+    color: #666;
+}
+
+/* Badge de pontos */
+.task-pontos {
+    background-color: var(--main-green);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    font-weight: 600;
+    flex-shrink: 0;
+    min-width: 40px;
+    text-align: center;
+}
+
+.tarefa-concluida .task-pontos {
+    background-color: var(--success-green);
+}
+
+.side-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 250px;
+}
+
+.score-box {
+    background-color: var(--box-bg-color);
+    padding: 20px 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: var(--text-color-dark);
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.score-box p {
+    margin: 0;
+}
+
+.score-box span {
+    font-size: 1.3em;
+    color: var(--main-green);
+    font-weight: 700;
+}
+
+/* Mensagem Motivacional */
+.mensagem-motivacional {
+    background-color: var(--box-bg-color);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95em;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.mensagem-motivacional.inicio {
+    border-left-color: #9e9e9e;
+    background-color: #f5f5f5;
+}
+
+.mensagem-motivacional.progresso {
+    border-left-color: var(--warning-orange);
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.mensagem-motivacional.metade {
+    border-left-color: var(--main-green);
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.mensagem-motivacional.completo {
+    border-left-color: var(--celebration-gold);
+    background-color: #fffde7;
+    color: #f57f17;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.conditions-list {
+    background-color: var(--box-bg-color);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: var(--text-color-dark);
+    font-weight: 600;
+}
+
+.conditions-list ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.conditions-list ul li {
+    background-color: white;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.95em;
+}
+
+/* Página de perfil */
+.profile-card {
+    background-color: var(--box-bg-color);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h2 {
+    font-size: 1.5em;
+    color: var(--text-color-dark);
+    margin-bottom: 20px;
+}
+
+.profile-info p {
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+}
+
+.profile-info strong {
+    font-weight: 600;
+}
+
+/* ===== ESTILOS PARA LISTA DE CLIENTES ===== */
+
+.clients-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1000px;
+}
+
+.client-card {
+    background-color: #e8f0e0;
+    padding: 20px 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.client-card:hover {
+    background-color: #d4e5c9;
+    border-color: var(--main-green);
+    transform: translateX(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.client-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.edit-icon {
+    width: 24px;
+    height: 24px;
+    color: #333;
+    flex-shrink: 0;
+}
+
+/* ===== ESTILOS PARA DETALHES DO CLIENTE ===== */
+
+.details-screen {
+    display: none;
+    padding: 30px 40px;
+}
+
+.details-screen.active {
+    display: block;
+}
+
+.back-button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: var(--main-green);
+    border-color: var(--main-green);
+}
+
+.back-button:hover svg {
+    stroke: white;
+}
+
+.details-container {
+    display: flex;
+    gap: 30px;
+}
+
+.details-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.details-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+}
+
+.info-panel {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-panel h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.info-panel p {
+    margin-bottom: 8px;
+    color: #555;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.week-card {
+    background-color: white;
+    padding: 20px 25px;
+    border-radius: 15px;
+    font-size: 18px;
+    color: var(--main-green);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.week-card:hover {
+    background-color: #f5f5f5;
+    transform: translateX(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-week-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--main-green);
+    color: white;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-week-button:hover {
+    background-color: var(--dark-green-hover);
+    transform: scale(1.1);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .details-container {
+        flex-direction: column;
+    }
+    
+    .details-left {
+        width: 100%;
+    }
+    
+    .add-week-button {
+        align-self: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .content-body {
+        flex-direction: column;
+    }
+    
+    .side-info {
+        width: 100%;
+    }
+    
+    .client-card {
+        padding: 15px 20px;
+    }
+    
+    .client-name {
+        font-size: 16px;
+    }
+    
+    .details-screen {
+        padding: 20px;
+    }
+}
