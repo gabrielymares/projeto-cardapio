@@ -14,20 +14,63 @@ function getClientes() {
         const avaliacao = ultimaAvaliacao ? JSON.parse(ultimaAvaliacao) : {};
         
         // Combinar os dois objetos em um único cliente
-        return [{
-            nome: usuario.nome || 'Sem nome',
-            genero: usuario.sexo || 'Não informado',
-            altura: usuario.altura || '0',
-            idade: usuario.idade || '0',
-            peso: usuario.peso || '0',
+        const clienteCompleto = {
+            nome: avaliacao.nome || usuario.nome || 'Aguardando cadastro',
+            genero: avaliacao.sexo || usuario.sexo || 'Não informado',
+            altura: avaliacao.altura || usuario.altura || '0',
+            idade: avaliacao.idade || usuario.idade || '0',
+            peso: avaliacao.peso || usuario.peso || '0',
             telefone: usuario.contato || 'Não informado',
-            imc: usuario.imc || '0',
+            imc: avaliacao.imc || usuario.imc || calcularIMC(avaliacao.peso || usuario.peso, avaliacao.altura || usuario.altura),
             restricoes: montarRestricoes(avaliacao),
             saude: montarSaude(avaliacao)
-        }];
+        };
+        
+        // Salvar na lista de clientes
+        const listaClientes = [clienteCompleto];
+        localStorage.setItem('clientes', JSON.stringify(listaClientes));
+        return listaClientes;
     }
     
     return [];
+}
+
+// Sincronizar dados quando o usuário preencher o formulário
+function sincronizarCliente() {
+    const dadosUsuario = localStorage.getItem('dadosUsuario');
+    const ultimaAvaliacao = localStorage.getItem('ultimaAvaliacao');
+    
+    if (dadosUsuario && ultimaAvaliacao) {
+        const usuario = JSON.parse(dadosUsuario);
+        const avaliacao = JSON.parse(ultimaAvaliacao);
+        
+        let clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
+        
+        // Encontrar o cliente pelo telefone/contato
+        const index = clientes.findIndex(c => c.telefone === usuario.contato);
+        
+        const clienteAtualizado = {
+            nome: avaliacao.nome || usuario.nome || 'Sem nome',
+            genero: avaliacao.sexo || usuario.sexo || 'Não informado',
+            altura: avaliacao.altura || usuario.altura || '0',
+            idade: avaliacao.idade || usuario.idade || '0',
+            peso: avaliacao.peso || usuario.peso || '0',
+            telefone: usuario.contato || 'Não informado',
+            imc: avaliacao.imc || usuario.imc || calcularIMC(avaliacao.peso || usuario.peso, avaliacao.altura || usuario.altura),
+            restricoes: montarRestricoes(avaliacao),
+            saude: montarSaude(avaliacao)
+        };
+        
+        if (index >= 0) {
+            // Atualizar cliente existente
+            clientes[index] = clienteAtualizado;
+        } else {
+            // Adicionar novo cliente
+            clientes.push(clienteAtualizado);
+        }
+        
+        localStorage.setItem('clientes', JSON.stringify(clientes));
+    }
 }
 
 // Montar texto de restrições a partir da avaliação
@@ -94,6 +137,9 @@ function montarSaude(avaliacao) {
 
 // Exibir lista de clientes
 function renderClientes() {
+    // Sincronizar antes de renderizar
+    sincronizarCliente();
+    
     const clientes = getClientes();
     const clientsList = document.getElementById('clientsList');
     

@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 3. SALVA OS DADOS CADASTRAIS (Chave: 'dadosUsuario')
         localStorage.setItem('dadosUsuario', JSON.stringify(dadosUsuario));
 
-        // 4. Redireciona para a próxima etapa (avaliação)
+        
         window.location.href = "../avaliacao/avaliacao.html";
     });
 });

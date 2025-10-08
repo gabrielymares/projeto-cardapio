@@ -1,3 +1,135 @@
+// ============================================
+// FUNÇÕES AUXILIARES PARA SALVAR NO ARRAY DE CLIENTES
+// ============================================
+
+function montarRestricoes(avaliacao) {
+    const restricoes = [];
+    
+    if (avaliacao.p1_doenca === 'sim' && avaliacao.p1_doenca_outros) {
+        restricoes.push(`Doença: ${avaliacao.p1_doenca_outros}`);
+    }
+    
+    if (avaliacao.p2_alergia && avaliacao.p2_alergia.length > 0) {
+        const alergias = avaliacao.p2_alergia.filter(a => a !== 'nenhuma');
+        if (alergias.length > 0) {
+            restricoes.push(`Alergias: ${alergias.join(', ')}`);
+        }
+    }
+    
+    if (avaliacao.p2_alergia_outros) {
+        restricoes.push(`Outras alergias: ${avaliacao.p2_alergia_outros}`);
+    }
+    
+    if (avaliacao.p3_restricao === 'sim' && avaliacao.p3_restricao_outros) {
+        restricoes.push(`Restrição médica: ${avaliacao.p3_restricao_outros}`);
+    }
+    
+    if (avaliacao.p8_alimentos_evita) {
+        restricoes.push(`Evita: ${avaliacao.p8_alimentos_evita}`);
+    }
+    
+    return restricoes.length > 0 ? restricoes.join('\n') : 'Nenhuma restrição informada';
+}
+
+function montarSaude(avaliacao) {
+    const saude = [];
+    
+    if (avaliacao.p4_exercicio) {
+        const exercicioMap = {
+            'diariamente': 'Exercita-se diariamente',
+            'algumas_vezes': 'Exercita-se 1-3 vezes/semana',
+            'raramente': 'Raramente exercita-se'
+        };
+        saude.push(exercicioMap[avaliacao.p4_exercicio] || avaliacao.p4_exercicio);
+    }
+    
+    if (avaliacao.p5_apetite) {
+        saude.push(`Apetite: ${avaliacao.p5_apetite}`);
+    }
+    
+    if (avaliacao.p6_objetivo && avaliacao.p6_objetivo.length > 0) {
+        const objetivos = avaliacao.p6_objetivo.map(obj => {
+            const map = {
+                'emagrecer': 'Emagrecer',
+                'ganhar_peso': 'Ganhar peso',
+                'ganhar_massa': 'Ganhar massa muscular',
+                'manter_peso': 'Manter peso',
+                'melhorar_saude': 'Melhorar saúde/energia'
+            };
+            return map[obj] || obj;
+        });
+        saude.push(`Objetivos: ${objetivos.join(', ')}`);
+    }
+    
+    if (avaliacao.p7_refeicoes) {
+        const refeicoesMap = {
+            '2_ou_menos': '2 ou menos refeições/dia',
+            '3_ou_4': '3 a 4 refeições/dia',
+            '5_ou_mais': '5 ou mais refeições/dia'
+        };
+        saude.push(refeicoesMap[avaliacao.p7_refeicoes] || avaliacao.p7_refeicoes);
+    }
+    
+    if (avaliacao.p9_frequencia) {
+        saude.push(`Consome frequentemente: ${avaliacao.p9_frequencia}`);
+    }
+    
+    if (avaliacao.p10_emocional) {
+        const emocionalMap = {
+            'sempre': 'Sempre tem fome emocional',
+            'as_vezes': 'Às vezes tem fome emocional',
+            'nunca': 'Não tem fome emocional'
+        };
+        saude.push(emocionalMap[avaliacao.p10_emocional] || avaliacao.p10_emocional);
+    }
+    
+    if (avaliacao.grupo) {
+        saude.push(`\n${avaliacao.grupo}`);
+    }
+    
+    if (avaliacao.pontuacao !== undefined) {
+        saude.push(`Pontuação: ${avaliacao.pontuacao}/50`);
+    }
+    
+    return saude.length > 0 ? saude.join('\n') : 'Informações não disponíveis';
+}
+
+// FUNÇÃO PRINCIPAL: Salva cliente no array (NÃO SOBRESCREVE!)
+function salvarClienteNoArray(dadosUsuario, avaliacaoCompleta) {
+    // Busca array existente ou cria novo
+    const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+    
+    // Cria objeto do novo cliente
+    const novoCliente = {
+        nome: dadosUsuario.nome || 'Sem nome',
+        genero: dadosUsuario.sexo || 'Não informado',
+        altura: dadosUsuario.altura || '0',
+        idade: dadosUsuario.idade || '0',
+        peso: dadosUsuario.peso || '0',
+        telefone: dadosUsuario.contato || 'Não informado',
+        imc: dadosUsuario.imc || '0',
+        restricoes: montarRestricoes(avaliacaoCompleta),
+        saude: montarSaude(avaliacaoCompleta),
+        dataCadastro: dadosUsuario.dataInicio || new Date().toISOString(),
+        grupo: avaliacaoCompleta.grupo || 'Não definido',
+        pontuacao: avaliacaoCompleta.pontuacao || 0
+    };
+    
+    // ADICIONA ao array (não substitui!)
+    clientes.push(novoCliente);
+    
+    // Salva array atualizado
+    localStorage.setItem('clientes', JSON.stringify(clientes));
+    
+    console.log(`✅ Cliente "${novoCliente.nome}" adicionado! Total de clientes: ${clientes.length}`);
+    
+    return clientes.length - 1;
+}
+
+// ============================================
+// CÓDIGO PRINCIPAL DO FORMULÁRIO
+// ============================================
+
 document.addEventListener('DOMContentLoaded', () => {
     const formulario = document.getElementById('formulario-avaliacao');
 
@@ -59,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
             temRestricaoMetabolica = true;
         }
 
-
         // Lógica de classificação original (adaptada aos 50 pontos)
         let grupo = '';
         if (temAlergiaIntestinal) {
@@ -100,7 +231,15 @@ document.addEventListener('DOMContentLoaded', () => {
             timestamp: new Date().toISOString()
         };
 
-        sessionStorage.setItem('resultadoAvaliacao', JSON.stringify(dadosCompletos)); // Mantive o nome da chave original para compatibilidade
+        // Salva no sessionStorage (para tela de pontuação)
+        sessionStorage.setItem('resultadoAvaliacao', JSON.stringify(dadosCompletos));
+        
+        // 🔥 NOVO: Salva também no localStorage como ultimaAvaliacao (compatibilidade)
+        localStorage.setItem('ultimaAvaliacao', JSON.stringify(dadosCompletos));
+
+        // 🔥 CRÍTICO: Adiciona cliente ao array (NÃO SOBRESCREVE!)
+        const dadosUsuario = JSON.parse(localStorage.getItem('dadosUsuario')) || {};
+        salvarClienteNoArray(dadosUsuario, dadosCompletos);
 
         setTimeout(() => {
             reverter();
@@ -155,7 +294,6 @@ function mostrarCampoOutros(element, forceShow = null) {
         campoOutros.value = '';
     }
 }
-
 
 function validarFormulario() {
     const perguntasObrigatorias = [

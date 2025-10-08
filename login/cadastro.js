@@ -7,11 +7,14 @@ const cadastroInput = document.getElementById("cadastroInput");
 const btnEnviarLogin = document.getElementById("btnEnviarLogin");
 const loginInput = document.getElementById("loginInput");
 
-// Novas constantes para os campos de senha
+// Campos de senha
 const senhaCadastroInput = document.getElementById("senhaCadastroInput");
 const confirmarSenhaInput = document.getElementById("confirmarSenhaInput");
-// Essa constante precisa do ID no HTML do campo de senha do Login
-const senhaLoginInput = document.getElementById("senhaLoginInput"); 
+const senhaLoginInput = document.getElementById("senhaLoginInput");
+
+// ==== CREDENCIAIS DO NUTRICIONISTA ====
+const NUTRICIONISTA_EMAIL = "nutricionista@gmail.com";
+const NUTRICIONISTA_SENHA = "nutri123";
 
 // ==== Funções de máscara para o contato ====
 
@@ -66,11 +69,10 @@ function showTab(tab) {
 btnCadastro.addEventListener("click", () => showTab("cadastro"));
 btnLogin.addEventListener("click", () => showTab("login"));
 
-// Após cadastro, redirecionar automaticamente para Login
+// ==== CADASTRO ====
 btnEnviarCadastro.addEventListener("click", (e) => {
     e.preventDefault();
 
-    // NOVO: Verificação de campos vazios para o cadastro
     if (!cadastroInput.value.trim() || !senhaCadastroInput.value.trim() || !confirmarSenhaInput.value.trim()) {
         alert("Por favor, preencha todos os campos.");
         return;
@@ -86,13 +88,80 @@ btnEnviarCadastro.addEventListener("click", (e) => {
         senha: senhaCadastroInput.value
     };
 
-    localStorage.setItem('dadosUsuario', JSON.stringify(dadosUsuario));
+    // Salvar dados do usuário para o login
+    window.localStorage.setItem('dadosUsuario', JSON.stringify(dadosUsuario));
+
+    // NOVO: Adicionar à lista de clientes para o nutricionista
+    let clientes = JSON.parse(window.localStorage.getItem('clientes') || '[]');
+    
+    // Verificar se já existe
+    const jaExiste = clientes.some(c => c.telefone === dadosUsuario.contato);
+    
+    if (!jaExiste) {
+        // Adicionar novo cliente (inicialmente sem dados completos)
+        clientes.push({
+            nome: 'Aguardando cadastro',
+            genero: 'Não informado',
+            altura: '0',
+            idade: '0',
+            peso: '0',
+            telefone: dadosUsuario.contato,
+            imc: '0',
+            restricoes: 'Nenhuma restrição informada',
+            saude: 'Informações não disponíveis'
+        });
+        
+        window.localStorage.setItem('clientes', JSON.stringify(clientes));
+    }
 
     alert("Cadastro realizado com sucesso!");
+    
+    // Limpar campos
+    cadastroInput.value = '';
+    senhaCadastroInput.value = '';
+    confirmarSenhaInput.value = '';
+    
     showTab("login");
 });
 
-// Aplica a nova máscara a ambos os campos
+// ==== LOGIN (AUTOMÁTICO) ====
+if (btnEnviarLogin) {
+    btnEnviarLogin.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (!loginInput || !senhaLoginInput) {
+            alert("Erro: campos não encontrados!");
+            return;
+        }
+
+        if (!loginInput.value.trim() || !senhaLoginInput.value.trim()) {
+            alert("Por favor, preencha todos os campos.");
+            return;
+        }
+
+        const contatoDigitado = loginInput.value.trim();
+        const senhaDigitada = senhaLoginInput.value;
+
+        // PRIMEIRO: Verifica se é o nutricionista
+        if (contatoDigitado === NUTRICIONISTA_EMAIL && senhaDigitada === NUTRICIONISTA_SENHA) {
+            alert("Bem-vindo, Nutricionista!");
+            window.location.href = "../nutricionista/telainicial.html";
+            return;
+        }
+
+        // SEGUNDO: Verifica se é um usuário comum cadastrado
+        const dadosExistentes = JSON.parse(window.localStorage.getItem('dadosUsuario')) || {};
+        
+        if (dadosExistentes.contato === contatoDigitado && dadosExistentes.senha === senhaDigitada) {
+            alert("Login realizado com sucesso!");
+            window.location.href = "../formulario/formulario.html";
+        } else {
+            alert("Credenciais inválidas. Verifique seu email/telefone e senha.");
+        }
+    });
+}
+
+// Aplicar máscaras
 function addMaskListeners(inputElement) {
     if (inputElement) {
         inputElement.addEventListener("input", applyContatoMask);
@@ -103,68 +172,3 @@ function addMaskListeners(inputElement) {
 
 addMaskListeners(cadastroInput);
 addMaskListeners(loginInput);
-
-
-<<<<<<< HEAD
-// Verificar se o botão foi encontrado
-console.log("Botão de login encontrado:", btnEnviarLogin);
-
-// Ao clicar em 'Entrar', salva o contato e redireciona
-if (btnEnviarLogin) {
-    btnEnviarLogin.addEventListener("click", (e) => {
-        e.preventDefault();
-        console.log("Botão de login clicado!");
-
-        // NOVO: Verificação de campos vazios para o login
-        if (!loginInput || !senhaLoginInput) {
-            alert("Erro: campos não encontrados!");
-            console.error("loginInput:", loginInput, "senhaLoginInput:", senhaLoginInput);
-            return;
-        }
-
-        if (!loginInput.value.trim() || !senhaLoginInput.value.trim()) {
-            alert("Por favor, preencha todos os campos.");
-            return;
-        }
-
-        const dadosExistentes = JSON.parse(localStorage.getItem('dadosUsuario')) || {};
-        
-        const contatoDigitado = loginInput.value;
-        const senhaDigitada = senhaLoginInput.value;
-
-        console.log("Tentando fazer login com:", contatoDigitado);
-        console.log("Dados salvos:", dadosExistentes);
-
-        if (dadosExistentes.contato === contatoDigitado && dadosExistentes.senha === senhaDigitada) {
-            alert("Login realizado com sucesso!");
-            window.location.href = "../formulario/formulario.html";
-        } else {
-            alert("Credenciais inválidas. Verifique seu email/telefone e senha.");
-        }
-    });
-} else {
-    console.error("Botão de login não encontrado! Verifique o ID 'btnEnviarLogin' no HTML.");
-}
-=======
-// Ao clicar em 'Entrar', salva o contato e redireciona
-btnEnviarLogin.addEventListener("click", () => {
-
-    // NOVO: Verificação de campos vazios para o login
-    if (!loginInput.value.trim() || !senhaLoginInput.value.trim()) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-    }
-
-    const dadosExistentes = JSON.parse(localStorage.getItem('dadosUsuario')) || {};
-    
-    const contatoDigitado = loginInput.value;
-    const senhaDigitada = senhaLoginInput.value;
-
-    if (dadosExistentes.contato === contatoDigitado && dadosExistentes.senha === senhaDigitada) {
-        alert("Login realizado com sucesso!");
-        window.location.href = "../formulario/formulario.html";
-    } else {
-        alert("Credenciais inválidas. Verifique seu email/telefone e senha.");
-    }
-});
->>>>>>> 9da9305ffb509ed101eb53f9caeb9cff5988d200
