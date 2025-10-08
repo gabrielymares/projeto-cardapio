@@ -105,6 +105,7 @@ addMaskListeners(cadastroInput);
 addMaskListeners(loginInput);
 
 
+<<<<<<< HEAD
 // Verificar se o botão foi encontrado
 console.log("Botão de login encontrado:", btnEnviarLogin);
 
@@ -144,3 +145,26 @@ if (btnEnviarLogin) {
 } else {
     console.error("Botão de login não encontrado! Verifique o ID 'btnEnviarLogin' no HTML.");
 }
+=======
+// Ao clicar em 'Entrar', salva o contato e redireciona
+btnEnviarLogin.addEventListener("click", () => {
+
+    // NOVO: Verificação de campos vazios para o login
+    if (!loginInput.value.trim() || !senhaLoginInput.value.trim()) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
+    const dadosExistentes = JSON.parse(localStorage.getItem('dadosUsuario')) || {};
+    
+    const contatoDigitado = loginInput.value;
+    const senhaDigitada = senhaLoginInput.value;
+
+    if (dadosExistentes.contato === contatoDigitado && dadosExistentes.senha === senhaDigitada) {
+        alert("Login realizado com sucesso!");
+        window.location.href = "../formulario/formulario.html";
+    } else {
+        alert("Credenciais inválidas. Verifique seu email/telefone e senha.");
+    }
+});
+>>>>>>> 9da9305ffb509ed101eb53f9caeb9cff5988d200
