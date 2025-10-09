@@ -10,35 +10,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <header class="page-header">
         <h1>Programa de Adaptação - 12 Semanas</h1>
     </header>
 
     <div class="page-container">
         <aside class="sidebar">
-           <div class="button-container">
-            <a href="../paginainicial/paginainicial.html" class="button active">Inicial</a>
-            <a href="../perfil/perfil.html"  class="button">Perfil</a>
-           </div>
+            <div class="button-container">
+                <a href="../paginainicial/paginainicial.html" class="button active">Inicial</a>
+                <a href="../perfil/perfil.html" class="button">Perfil</a>
+            </div>
             <div class="logo-placeholder">
                 <img src="../imagens/logobranca.png" alt="Logo Passe Leve">
             </div>
         </aside>
            
         <main class="main-content">
-            
+            <div class="content-header">
+                <h2 id="semana-atual-titulo">Semana 1 - Segunda-feira</h2>
+            </div>
+
+            <div class="content-body">
+                <div class="tasks-container">
+                    <ul></ul>
+                </div>
 
                 <div class="side-info">
                     <div class="score-box">
-                        <p>Pontuação <span id="pontuacao-total">0</span> / <span id="pontuacao-usuario">0</span></p>
+                        <p>Pontuação</p>
+                        <p><span id="pontuacao-total">0</span>/22</p>
                     </div>
                     
-                   
-                    
                     <div class="conditions-list">
-                        <ul>
-                            <li>Carregando condições...</li>
+                        <h4 style="margin-bottom: 10px; color: #333;">• Condições Intestinais</h4>
+                        <ul id="lista-condicoes">
+                            <li style="text-align: center; color: #999;">Carregando...</li>
                         </ul>
                     </div>
                 </div>

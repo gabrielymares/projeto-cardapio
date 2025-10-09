@@ -310,3 +310,44 @@ h1 {
         width: 95%;
     }
 }
+/* Estilo para refeições concluídas pelo cliente */
+.refeicao-item.refeicao-concluida {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    opacity: 0.9;
+}
+
+.refeicao-item.refeicao-concluida .refeicao-tipo {
+    color: #2e7d32;
+}
+
+/* Animação suave para os indicadores */
+.dia-header span {
+    transition: all 0.3s ease;
+}
+
+/* Estilo para o indicador de check nas refeições */
+.refeicao-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Melhorar o layout dos itens de refeição */
+.refeicao-item > span {
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+/* Tooltip para os indicadores */
+.dia-header span[title]:hover {
+    cursor: help;
+    transform: scale(1.1);
+}
+
+/* Badge de status no cabeçalho do dia */
+.dia-header > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
