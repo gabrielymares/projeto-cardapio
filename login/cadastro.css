@@ -8,6 +8,7 @@
 
 body {
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Container principal dividido */
@@ -17,10 +18,10 @@ body {
     height: 100vh;
 }
 
-/* Metade esquerda */
+/* Metade esquerda com gradiente sutil */
 .left-panel {
     flex: 1;
-    background: #8fa248;
+    background: linear-gradient(135deg, #8fa248 0%, #7a8c3d 100%);
     color: white;
     display: flex;
     flex-direction: column;
@@ -28,16 +29,68 @@ body {
     align-items: center;
     text-align: center;
     padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de círculos decorativos no fundo */
+.left-panel::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    top: -200px;
+    left: -200px;
+    animation: float 8s ease-in-out infinite;
+}
+
+.left-panel::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    bottom: -150px;
+    right: -150px;
+    animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.05); }
 }
 
 .left-panel h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    animation: slideInLeft 0.8s ease-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .left-panel .sub {
     font-weight: bold;
     font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+    animation: slideInLeft 0.8s ease-out 0.2s both;
+    letter-spacing: 0.5px;
+    opacity: 0.95;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .right-panel {
@@ -46,94 +99,262 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 60px 40px 40px 40px; 
+    animation: fadeIn 0.6s ease-out;
 }
 
-/* Logo ÚNICA e com tamanho adequado para o container */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Logo com múltiplos efeitos visuais */
 .logo {
-    width: 300px; /* Tamanho que cabe dentro do login-box */
+    width: 300px;
     height: auto;
     margin-bottom: 30px;
-    display: block; /* Garante que ocupe a linha inteira para centralizar */
+    display: block;
+    animation: zoomIn 0.6s ease-out, logoPulse 3s ease-in-out 1s infinite;
+    filter: drop-shadow(0 4px 8px rgba(143, 162, 72, 0.2));
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
 }
 
-/* Caixa de login */
+/* Efeito de brilho ao redor da logo */
+.logo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 110%;
+    height: 110%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(143, 162, 72, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.logo:hover {
+    transform: scale(1.05) rotate(-2deg);
+    filter: drop-shadow(0 8px 16px rgba(143, 162, 72, 0.4)) brightness(1.1);
+}
+
+.logo:hover::before {
+    opacity: 1;
+    animation: glowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) rotate(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes logoPulse {
+    0%, 100% { 
+        transform: scale(1);
+    }
+    50% { 
+        transform: scale(1.02);
+    }
+}
+
+@keyframes glowPulse {
+    0%, 100% { 
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* Caixa de login com sombra mais elegante */
 .login-box {
     background: #eeeeee;
     padding: 40px 30px;
     border-radius: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     text-align: center;
     width: 350px;
+    animation: slideUp 0.6s ease-out 0.2s both;
+    transition: transform 0.3s ease;
 }
 
-/* Tabs */
+.login-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tabs com efeito de transição suave */
 .tab-buttons {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 .tab {
     flex: 1;
-    padding: 10px 0;
+    padding: 12px 0;
     border: none;
     cursor: pointer;
-    font-weight: normal; 	
-    font-size: 1rem; 	
-    border-radius: 8px;
-    margin: 0 5px;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 10px;
     background: #ddd;
     color: #535a3a;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.tab:hover::before {
+    left: 100%;
+}
+
+.tab:hover {
+    background: #c5c5c5;
+    transform: translateY(-2px);
 }
 
 .tab.active {
-    background: #8fa248;
-    color: #dddddd;
-    font-weight: normal; 
+    background: linear-gradient(135deg, #8fa248 0%, #7a8c3d 100%);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(143, 162, 72, 0.3);
 }
 
-/* Inputs */
+/* Inputs com efeitos modernos */
 input {
     display: block;
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 8px;
+    padding: 14px;
+    margin: 12px 0;
+    border: 2px solid transparent;
+    border-radius: 10px;
     background: #8fa248;
-    color: #dddddd;
+    color: #ffffff;
     font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #7a8c3d;
+    background: #7a8c3d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(143, 162, 72, 0.2);
 }
 
 input::placeholder {
-    color: #ddd;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
 }
 
-/* Botão enviar */
+input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Botão enviar com efeito de onda */
 .submit {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 8px;
-    background: #8fa248;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #8fa248 0%, #7a8c3d 100%);
     color: white;
-    font-size: 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(143, 162, 72, 0.3);
+}
+
+.submit::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.submit:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .submit:hover {
-    background: #4c532c;
+    background: linear-gradient(135deg, #7a8c3d 0%, #4c532c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(143, 162, 72, 0.4);
 }
 
+.submit:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(143, 162, 72, 0.3);
+}
+
+/* Animação de transição entre formulários */
 .form {
     display: none;
+    animation: formFadeIn 0.4s ease-out;
 }
 
 .form.active {
     display: block;
+}
+
+@keyframes formFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 /* Responsivo */
@@ -149,6 +370,10 @@ input::placeholder {
         min-height: 30vh;
     }
     
+    .left-panel h1 {
+        font-size: 2rem;
+    }
+    
     .right-panel {
         flex: none;
         min-height: 70vh;
@@ -157,5 +382,9 @@ input::placeholder {
     .login-box {
         width: 90%;
         max-width: 350px;
+    }
+    
+    .logo {
+        width: 250px;
     }
 }

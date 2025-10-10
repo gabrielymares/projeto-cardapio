@@ -12,7 +12,24 @@ body, html {
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    
+}
+
+/* Efeito de overlay sutil na imagem de fundo */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(143, 162, 72, 0.05);
+    pointer-events: none;
+    animation: pulseOverlay 8s ease-in-out infinite;
+}
+
+@keyframes pulseOverlay {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
 }
 
 .container {
@@ -20,6 +37,8 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .main-content {
@@ -27,38 +46,167 @@ body, html {
     flex-direction: column; 
     align-items: center; 
     text-align: center;
+    animation: fadeInScale 0.8s ease-out;
 }
 
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Container do formulário com efeitos visuais */
 .form-container {
-    background-color: #dfeddc;
-    padding: 30px 20px;
-    border-radius: 20px;
+    background: linear-gradient(135deg, #dfeddc 0%, #e8f4e5 100%);
+    padding: 40px 30px;
+    border-radius: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 350px;
+    width: 380px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15), 
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    animation: slideUpForm 0.8s ease-out 0.2s both;
 }
 
+/* Efeito de brilho animado no fundo do container */
+.form-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, 
+        transparent, 
+        rgba(143, 162, 72, 0.05), 
+        transparent);
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+@keyframes slideUpForm {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título com efeito de gradiente */
 .form-title {
-    font-size: 1.5em;
-    color: #8fa248;
-    margin-bottom: 20px;
+    font-size: 1.7em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #8fa248 0%, #6d7d38 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    animation: titleSlide 0.8s ease-out 0.4s both;
 }
 
+/* Linha decorativa abaixo do título */
+.form-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8fa248, transparent);
+    border-radius: 2px;
+}
+
+@keyframes titleSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Inputs com animação escalonada */
 input[type="text"], 
 input[type="number"], 
 select {
     width: 92%;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 18px;
+    border: 2px solid transparent;
+    border-radius: 12px;
     background-color: #ffffff;
-    color: #888888;
+    color: #555;
     font-size: 1em;
     outline: none;
     height: auto;
     line-height: normal;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+}
+
+/* Animação de entrada para cada input */
+input[type="text"]:nth-of-type(1) { animation: slideInInput 0.5s ease-out 0.5s both; }
+input[type="number"]:nth-of-type(1) { animation: slideInInput 0.5s ease-out 0.6s both; }
+select { animation: slideInInput 0.5s ease-out 0.7s both; }
+input[type="text"]:nth-of-type(2) { animation: slideInInput 0.5s ease-out 0.8s both; }
+input[type="number"]:nth-of-type(2) { animation: slideInInput 0.5s ease-out 0.9s both; }
+input[type="number"]:nth-of-type(3) { animation: slideInInput 0.5s ease-out 1s both; }
+
+@keyframes slideInInput {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Efeito de foco nos inputs */
+input[type="text"]:focus, 
+input[type="number"]:focus, 
+select:focus {
+    border-color: #8fa248;
+    background-color: #fafffe;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(143, 162, 72, 0.2),
+                0 0 0 3px rgba(143, 162, 72, 0.1);
+}
+
+/* Placeholder com transição */
+input::placeholder {
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+input:focus::placeholder {
+    color: #8fa248;
 }
 
 #sexo {
@@ -69,69 +217,142 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238fa248' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    cursor: pointer;
 }
 
 select:invalid {
-    color: #888;
+    color: #aaa;
 }
 
-.btn-confirmar {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background-color: #8fa248;
-    color: white;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
+select:valid {
+    color: #555;
 }
 
-.btn-confirmar:hover {
-    background-color: #888;
-}
-
-
-
+/* Campo IMC com destaque especial */
 #resultado-imc-input {
     width: 92%;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 10px;
-    background-color: #ffffff;
-    color: #888888;
-    font-size: 1em;
+    padding: 18px;
+    margin-bottom: 18px;
+    border: 2px solid #8fa248;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fff7 100%);
+    color: #8fa248;
+    font-size: 1.1em;
     outline: none;
     height: auto;
     line-height: normal;
     text-align: center; 
-    font-weight: bold; 
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(143, 162, 72, 0.15);
+    animation: slideInInput 0.5s ease-out 1.1s both, glowIMC 2s ease-in-out 1.5s infinite;
 }
 
+@keyframes glowIMC {
+    0%, 100% { 
+        box-shadow: 0 4px 15px rgba(143, 162, 72, 0.15);
+    }
+    50% { 
+        box-shadow: 0 4px 20px rgba(143, 162, 72, 0.3);
+    }
+}
 
 #resultado-imc-input[readonly] {
     cursor: default;
 }
 
+#resultado-imc-input::placeholder {
+    color: #8fa248;
+    opacity: 0.6;
+}
 
+/* Botão confirmar com múltiplos efeitos */
+.btn-confirmar {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8fa248 0%, #7a8c3d 100%);
+    color: white;
+    font-size: 1.15em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(143, 162, 72, 0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    animation: slideInInput 0.5s ease-out 1.2s both;
+}
 
+/* Efeito de onda no botão */
+.btn-confirmar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-confirmar:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.btn-confirmar:hover {
+    background: linear-gradient(135deg, #7a8c3d 0%, #5d6c2f 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(143, 162, 72, 0.4);
+}
+
+.btn-confirmar:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(143, 162, 72, 0.3);
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
     .form-container {
-        width: 80%;
+        width: 85%;
+        padding: 35px 25px;
+    }
+    
+    .form-title {
+        font-size: 1.5em;
     }
 }
 
 @media (max-width: 480px) {
     .form-container {
         width: 90%;
-        padding: 20px 30px;
+        padding: 30px 20px;
     }
 
-    .title {
-        font-size: 1.8em;
-        margin-bottom: 20px;
+    .form-title {
+        font-size: 1.3em;
+        margin-bottom: 25px;
+    }
+    
+    input[type="text"], 
+    input[type="number"], 
+    select {
+        padding: 14px;
+        margin-bottom: 15px;
+    }
+    
+    .btn-confirmar {
+        padding: 16px;
+        font-size: 1.05em;
     }
 }

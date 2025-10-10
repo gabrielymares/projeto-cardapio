@@ -1,9 +1,3 @@
-// =======================
-// VARIÁVEIS GLOBAIS
-// =======================
-let clienteAtual = 0;
-let semanaAtual = 1;
-let diaAtual = 1;
 
 // =======================
 // INICIALIZAÇÃO
@@ -109,29 +103,7 @@ function carregarRefeicoesDoDia() {
         `;
     }).join('');
 }
-
-// Marcar refeição concluída
-function marcarRefeicao(index) {
-    const cardapio = getCardapio();
-    // Pega as refeições ordenadas (aqui a ordenação não afeta o index do status, pois o index já está correto)
-    const refeicoes = cardapio[`semana${semanaAtual}`]?.[`dia${diaAtual}`] || []; 
-    if (!refeicoes.length) return;
-
-    const chave = `status_refeicoes_cliente${clienteAtual}_s${semanaAtual}_d${diaAtual}`;
-    const status = JSON.parse(localStorage.getItem(chave) || '[]');
-    
-    // Trata o caso onde o status pode ter sido resetado ou o cardápio modificado, mas o cliente ainda não recarregou
-    if (index >= status.length) return; 
-
-    status[index] = !status[index];
-    localStorage.setItem(chave, JSON.stringify(status));
-
-    carregarPontuacao();
-
-    const li = document.querySelector(`#refeicao-${index}`).closest('li');
-    li.classList.toggle('tarefa-concluida');
-    mostrarFeedback(status[index] ? '✅ Refeição concluída!' : '⏸️ Refeição desmarcada');
-}
+ 
 
 // Mostrar feedback visual
 function mostrarFeedback(msg) {
